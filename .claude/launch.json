@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "presage-site",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["-run", "-e", "httpd", "/private/tmp/claude-501/-Users-sanjaylow-Downloads-Presage-website/9730b196-d041-417a-9993-1842ff110863/scratchpad/site", "-p", "4173"],
+      "port": 4173
+    }
+  ]
+}

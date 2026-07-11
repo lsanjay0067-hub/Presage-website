@@ -14,18 +14,16 @@ document.querySelectorAll("[data-year]").forEach((year) => {
 const header = document.querySelector("[data-header]");
 const hero = document.querySelector(".hero");
 
+if (hero) {
+  requestAnimationFrame(() => hero.classList.add("is-lit"));
+}
+
 if (header && hero) {
   const headerObserver = new IntersectionObserver(
     ([entry]) => header.classList.toggle("is-scrolled", !entry.isIntersecting),
     { threshold: 0.08 }
   );
   headerObserver.observe(hero);
-
-  const heroLightObserver = new IntersectionObserver(
-    ([entry]) => hero.classList.toggle("is-lit", entry.intersectionRatio < 0.82),
-    { threshold: [0.35, 0.55, 0.72, 0.82, 1] }
-  );
-  heroLightObserver.observe(hero);
 }
 
 const revealItems = document.querySelectorAll(".reveal");
@@ -67,26 +65,21 @@ if (navTargets.length) {
   navTargets.forEach((section) => sectionObserver.observe(section));
 }
 
-const processCards = document.querySelectorAll(".process-card");
-
-if (processCards.length && !prefersReducedMotion) {
-  const processObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => entry.target.classList.toggle("is-current", entry.isIntersecting));
-    },
-    { rootMargin: "-30% 0px -38%", threshold: 0.2 }
-  );
-  processCards.forEach((card) => processObserver.observe(card));
-}
-
-document.querySelectorAll("[data-accordion]").forEach((accordion) => {
-  const items = accordion.querySelectorAll("details");
+document.querySelectorAll("[data-faq]").forEach((faq) => {
+  const items = [...faq.querySelectorAll(".faq-item")];
   items.forEach((item) => {
-    item.addEventListener("toggle", () => {
-      if (!item.open) return;
+    const question = item.querySelector(".faq-question");
+    if (!question) return;
+    question.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
       items.forEach((other) => {
-        if (other !== item) other.open = false;
+        other.classList.remove("is-open");
+        other.querySelector(".faq-question")?.setAttribute("aria-expanded", "false");
       });
+      if (!isOpen) {
+        item.classList.add("is-open");
+        question.setAttribute("aria-expanded", "true");
+      }
     });
   });
 });
@@ -109,21 +102,4 @@ if (videoFrame && videoTrigger) {
     iframe.allowFullscreen = true;
     videoFrame.replaceChildren(iframe);
   });
-}
-
-const showcase = document.querySelector("[data-showcase]");
-const showcaseToggle = document.querySelector("[data-showcase-toggle]");
-
-if (showcase && showcaseToggle) {
-  if (prefersReducedMotion) {
-    showcase.classList.add("is-paused");
-    showcaseToggle.textContent = "Motion disabled";
-    showcaseToggle.disabled = true;
-  } else {
-    showcaseToggle.addEventListener("click", () => {
-      const paused = showcase.classList.toggle("is-paused");
-      showcaseToggle.setAttribute("aria-pressed", String(paused));
-      showcaseToggle.textContent = paused ? "Play motion" : "Pause motion";
-    });
-  }
 }
