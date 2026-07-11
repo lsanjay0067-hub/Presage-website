@@ -186,7 +186,12 @@ p {
 
 .brand img {
   width: auto;
-  height: 28px;
+  height: 36px;
+}
+
+.brand-name{
+  width: auto;
+  height: 64px;
 }
 
 .nav-links {
