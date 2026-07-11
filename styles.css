@@ -1054,6 +1054,10 @@ p {
     height: 24px;
   }
 
+  .brand-name {
+    height: 48px;
+  }
+
   .button-nav {
     padding-inline: 12px;
   }
