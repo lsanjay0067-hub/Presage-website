@@ -573,8 +573,9 @@ p {
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  align-items: center;   
+  justify-content: center;
   gap: 14px;
   width: min(700px, calc(100% - 40px));
   margin-inline: auto;
@@ -584,8 +585,9 @@ p {
   display: grid;
   align-content: center;
   gap: 14px;
-  min-height: 230px;
-  padding: 40px 22px;
+  height: 230px;
+  min-width: 300px;
+  padding: 50px 50px;
   border: 1px solid var(--line-1);
   border-radius: 16px;
   background: var(--surface-1);
@@ -963,6 +965,18 @@ p {
   }
 }
 
+@media (max-width: 1024px) {
+  .stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .stat {
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .process-grid {
     grid-template-columns: 1fr;
@@ -1018,11 +1032,6 @@ p {
 
   .hero h1 {
     max-width: 680px;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-    width: min(480px, calc(100% - 40px));
   }
 
   .stat {
