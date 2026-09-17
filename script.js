@@ -107,7 +107,7 @@ function closeBooking() {
   document.body.classList.remove("has-modal");
 }
 
-document.querySelectorAll("[data-calendly-popup]").forEach((trigger) => {
+document.querySelectorAll(".js-cta").forEach((trigger) => {
   trigger.addEventListener("click", (event) => {
     if (openBooking()) event.preventDefault();
   });
