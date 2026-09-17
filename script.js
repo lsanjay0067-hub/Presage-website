@@ -1,4 +1,5 @@
 const CTA_URL = "#booking";
+const CALENDLY_URL = "https://calendly.com/sanjay-presageretention/30min?hide_gdpr_banner=1&primary_color=1fab54";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -80,5 +81,13 @@ document.querySelectorAll("[data-faq]").forEach((faq) => {
         question.setAttribute("aria-expanded", "true");
       }
     });
+  });
+});
+
+document.querySelectorAll("[data-calendly-popup]").forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    if (!window.Calendly) return; // widget not loaded yet: fall through to #booking
+    event.preventDefault();
+    window.Calendly.initPopupWidget({ url: CALENDLY_URL });
   });
 });
