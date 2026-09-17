@@ -1,5 +1,4 @@
 const CTA_URL = "#booking";
-const VIDEO_ID = "";
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -83,23 +82,3 @@ document.querySelectorAll("[data-faq]").forEach((faq) => {
     });
   });
 });
-
-const videoFrame = document.querySelector("[data-video-frame]");
-const videoTrigger = document.querySelector("[data-video-trigger]");
-const videoStatus = document.querySelector("[data-video-status]");
-
-if (videoFrame && videoTrigger) {
-  videoTrigger.addEventListener("click", () => {
-    if (!VIDEO_ID) {
-      if (videoStatus) videoStatus.hidden = false;
-      return;
-    }
-
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1`;
-    iframe.title = "The Presage 60/40 retention model";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-    iframe.allowFullscreen = true;
-    videoFrame.replaceChildren(iframe);
-  });
-}
