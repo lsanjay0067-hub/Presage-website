@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Presage grows email and SMS revenue for ecommerce brands through narrative-led retention.">
   <meta name="theme-color" content="#151515">
-  <link rel="icon" href="./Assets/Icon.ico">
+  <link rel="icon" type="image/png" sizes="64x64" href="./Assets/favicon.png">
+  <link rel="apple-touch-icon" href="./Assets/favicon.png">
   <title>Presage | Email and SMS retention</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +20,7 @@
   <header class="site-header" data-header>
     <nav class="nav-shell" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Presage home">
-        <img src="./Assets/icon-logo.png" alt="Presage">
+        <img src="./Assets/Logo.png" alt="Presage">
       </a>
       <div class="nav-links">
         <a href="#method">The method</a>
@@ -314,6 +315,34 @@
       <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
     </div>
   </footer>
+
+  <div class="booking-modal" data-booking-modal hidden>
+    <div class="booking-modal-backdrop" data-booking-close></div>
+    <div class="booking-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+      <button class="booking-modal-close" type="button" aria-label="Close booking" data-booking-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="booking-modal-copy">
+        <div>
+          <span class="booking-modal-avatar" aria-hidden="true"><img class="is-mark" src="./Assets/icon-logo.png" alt=""></span>
+          <h2 id="booking-modal-title">Discovery call</h2>
+          <p class="booking-modal-with">With Sanjay Tamang</p>
+          <ul class="booking-modal-meta">
+            <li>
+              <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M9 5h18M9 31h18M11 5v4c0 4 4 7 7 9-3 2-7 5-7 9v4M25 5v4c0 4-4 7-7 9 3 2 7 5 7 9v4"/></svg>
+              <span>30 min to talk about strategy, email audit, etc.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="19" height="16" rx="2"/><path d="M23 15l9-4v14l-9-4z"/></svg>
+              <span>Web conferencing details provided upon confirmation.</span>
+            </li>
+          </ul>
+        </div>
+        <a class="booking-modal-privacy" href="https://calendly.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      </div>
+      <div class="booking-modal-calendar" data-calendly-parent></div>
+    </div>
+  </div>
 
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script src="script.js"></script>
