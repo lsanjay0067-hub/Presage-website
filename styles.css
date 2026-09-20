@@ -314,13 +314,7 @@ p {
   height: var(--wall-h);
   flex: 0 0 auto;
   object-fit: cover;
-}
-
-.hero-veil {
-  position: absolute;
-  inset: 0;
-  background: rgba(6, 10, 14, 0.74);
-  pointer-events: none;
+  opacity: 0.2;
 }
 
 .hero-overlay {
