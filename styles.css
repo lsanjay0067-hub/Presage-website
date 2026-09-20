@@ -877,7 +877,9 @@ p {
 }
 
 .proof-shot img {
+  display: block;
   width: 100%;
+  height: auto;
   border-radius: 8px;
 }
 
