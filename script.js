@@ -35,22 +35,49 @@ if (hero) {
   });
 }
 
-const revealItems = document.querySelectorAll(".reveal");
+const revealItems = [...document.querySelectorAll(".reveal")];
+const showReveal = (item) => item.classList.add("is-visible");
 
 if (prefersReducedMotion) {
-  revealItems.forEach((item) => item.classList.add("is-visible"));
+  revealItems.forEach(showReveal);
 } else {
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.15, rootMargin: "0px 0px -6%" }
-  );
-  revealItems.forEach((item) => revealObserver.observe(item));
+  // IntersectionObserver does the work normally; the scroll sweep below is a
+  // belt-and-braces fallback so a throttled or late observer can never leave
+  // a section invisible.
+  let pending = revealItems.slice();
+
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          showReveal(entry.target);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -6%" }
+    );
+    revealItems.forEach((item) => revealObserver.observe(item));
+  }
+
+  let sweeping = false;
+  const sweep = () => {
+    sweeping = false;
+    const limit = window.innerHeight * 0.94;
+    pending = pending.filter((item) => {
+      if (item.getBoundingClientRect().top > limit) return true;
+      showReveal(item);
+      return false;
+    });
+  };
+  const queueSweep = () => {
+    if (sweeping || !pending.length) return;
+    sweeping = true;
+    requestAnimationFrame(sweep);
+  };
+  window.addEventListener("scroll", queueSweep, { passive: true });
+  window.addEventListener("resize", queueSweep);
+  queueSweep();
 }
 
 const navLinks = [...document.querySelectorAll(".nav-links a")];
@@ -126,3 +153,52 @@ bookingModal?.querySelectorAll("[data-booking-close]").forEach((el) => el.addEve
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeBooking();
 });
+
+// ---------- horizontal email strip: pause when out of view ----------
+const strip = document.querySelector("[data-strip]");
+if (strip && "IntersectionObserver" in window) {
+  new IntersectionObserver(([entry]) => strip.classList.toggle("is-idle", !entry.isIntersecting), { threshold: 0 }).observe(strip);
+}
+
+// ---------- first 60 days: circles light as the rail fills on scroll ----------
+const days = document.querySelector("[data-days]");
+if (days) {
+  const steps = [...days.querySelectorAll("[data-days-step]")];
+  const nums = steps.map((step) => step.querySelector(".days-num"));
+  const rail = days.querySelector(".days-rail");
+  const fill = days.querySelector("[data-days-fill]");
+  let ticking = false;
+  let watching = false;
+
+  const paint = () => {
+    ticking = false;
+    const line = window.innerHeight * 0.62;
+    const railBox = rail.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (line - railBox.top) / railBox.height));
+    fill.style.transform = `scaleY(${progress})`;
+    steps.forEach((step, i) => {
+      if (i === 0) return; // step one is always lit
+      const box = nums[i].getBoundingClientRect();
+      step.classList.toggle("is-lit", box.top + box.height / 2 <= line);
+    });
+  };
+
+  const request = () => {
+    if (!watching || ticking) return;
+    ticking = true;
+    requestAnimationFrame(paint);
+  };
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      watching = entry.isIntersecting;
+      if (watching) request();
+    }, { rootMargin: "20% 0px 20% 0px" }).observe(days);
+  } else {
+    watching = true;
+  }
+
+  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("resize", request);
+  request();
+}
