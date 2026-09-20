@@ -142,6 +142,8 @@ const bookingModal = document.querySelector("[data-booking-modal]");
 const calendlyParent = bookingModal?.querySelector("[data-calendly-parent]");
 let calendlyMounted = false;
 
+let bookingClosing = false;
+
 function openBooking() {
   if (!bookingModal || !calendlyParent) return false;
   if (!calendlyMounted) {
@@ -149,6 +151,8 @@ function openBooking() {
     window.Calendly.initInlineWidget({ url: CALENDLY_URL, parentElement: calendlyParent });
     calendlyMounted = true;
   }
+  bookingClosing = false;
+  bookingModal.classList.remove("is-closing");
   bookingModal.hidden = false;
   document.body.classList.add("has-modal");
   bookingModal.querySelector(".booking-modal-close")?.focus();
@@ -156,9 +160,22 @@ function openBooking() {
 }
 
 function closeBooking() {
-  if (!bookingModal || bookingModal.hidden) return;
-  bookingModal.hidden = true;
-  document.body.classList.remove("has-modal");
+  if (!bookingModal || bookingModal.hidden || bookingClosing) return;
+  bookingClosing = true;
+  bookingModal.classList.add("is-closing");
+  const dialog = bookingModal.querySelector(".booking-modal-dialog");
+  let settled = false;
+  const finish = () => {
+    if (settled) return;
+    settled = true;
+    dialog?.removeEventListener("animationend", finish);
+    bookingModal.classList.remove("is-closing");
+    bookingModal.hidden = true;
+    document.body.classList.remove("has-modal");
+    bookingClosing = false;
+  };
+  dialog?.addEventListener("animationend", finish);
+  setTimeout(finish, 260); // safety net if the animation never reports back
 }
 
 document.querySelectorAll(".js-cta").forEach((trigger) => {
