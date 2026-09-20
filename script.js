@@ -14,16 +14,25 @@ document.querySelectorAll("[data-year]").forEach((year) => {
 const header = document.querySelector("[data-header]");
 const hero = document.querySelector(".hero");
 
-if (hero) {
-  requestAnimationFrame(() => hero.classList.add("is-lit"));
-}
-
 if (header && hero) {
   const headerObserver = new IntersectionObserver(
     ([entry]) => header.classList.toggle("is-scrolled", !entry.isIntersecting),
     { threshold: 0.08 }
   );
   headerObserver.observe(hero);
+}
+
+// Pause the hero wall whenever it is off-screen or the tab is hidden so the
+// compositor is not animating five layers nobody can see.
+if (hero) {
+  const setIdle = (idle) => hero.classList.toggle("is-idle", idle);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => setIdle(!entry.isIntersecting), { threshold: 0 }).observe(hero);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) setIdle(true);
+    else setIdle(hero.getBoundingClientRect().bottom <= 0);
+  });
 }
 
 const revealItems = document.querySelectorAll(".reveal");
