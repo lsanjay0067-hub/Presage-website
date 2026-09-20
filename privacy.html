@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
   <meta name="theme-color" content="#090f15">
   <link rel="icon" type="image/png" sizes="64x64" href="./Assets/favicon.png">
   <title>Privacy Policy | Presage</title>
@@ -13,35 +12,88 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header is-scrolled" data-header>
-    <nav class="nav-shell" aria-label="Primary navigation">
-      <a class="brand" href="index.html" aria-label="Presage home">
+  <header class="site-header" data-header>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
+      <img src="./Assets/favicon.png" alt="" width="64" height="64">
+    </button>
+    <nav class="nav-shell" id="primary-nav" aria-label="Primary navigation">
+      <a class="brand" href="index.html#top" aria-label="Presage home">
         <img src="./Assets/Logo.png" alt="Presage">
       </a>
       <div class="nav-links">
-        <a href="index.html#method">The method</a>
+        <a href="index.html#first-60-days">The method</a>
         <a href="index.html#how-it-works">How it works</a>
         <a href="index.html#results">Results</a>
         <a href="index.html#faqs">FAQ</a>
       </div>
-      <a class="button button-nav" href="index.html#booking">Book a call</a>
+      <a class="button button-nav js-cta" href="index.html#booking">Book a call</a>
     </nav>
   </header>
 
   <main class="legal-page">
     <h1>Privacy Policy</h1>
-    <p class="legal-updated">Last updated <span data-year></span></p>
-    <p>This page is being written. The full privacy policy for Presage will be published here shortly. In the meantime, questions about how we work with your data or the terms of an engagement can be raised on a discovery call, or by replying to any email from Presage.</p>
+    <p class="legal-updated">Last updated September 2026</p>
+    <p>This policy explains what personal information Presage collects, why, and how it is handled. It applies to this website and to the way we work with client data during an engagement.</p>
+
+    <h2>What we collect from visitors</h2>
+    <p>When you book a call, the scheduling form is provided by Calendly and collects your name, email address, and any notes you choose to add. We use that information to hold the call and to follow up afterwards. This site loads fonts from Google Fonts and the booking widget from Calendly; each of those services may set its own cookies and is governed by its own privacy policy. We do not run advertising trackers.</p>
+
+    <h2>What we access during an engagement</h2>
+    <p>To do the work, Presage is granted access to client platforms such as Klaviyo and Shopify. Those platforms contain your customers' personal data: names, email addresses, phone numbers, order history, and engagement data. We access that data only to plan, build, and measure your retention program, under the scope and access level you grant, and under a signed data processing agreement where one is required.</p>
+
+    <h2>How data is used and shared</h2>
+    <p>We do not sell personal data, and we do not use one client's customer data to benefit another. Customer data stays inside your own platform accounts; we do not export it to systems we control beyond what is needed for reporting to you. We share information only with the service providers necessary to run the engagement, and only to the extent required.</p>
+
+    <h2>Retention</h2>
+    <p>Booking and correspondence records are kept for as long as they are useful for the relationship and then deleted. Access to client platforms is revoked when an engagement ends. Any reporting exports we hold are deleted within ninety days of the engagement ending unless you ask us to keep them longer.</p>
+
+    <h2>Your rights</h2>
+    <p>You can ask what information we hold about you, ask for it to be corrected or deleted, or withdraw consent for us to contact you at any time. For your customers' data, requests should go to you as the account owner; we will assist promptly with anything that involves the work we have done.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy can be raised on a call or by replying to any email from Presage. We may update this page as our practices or the law change; the date at the top shows the current version.</p>
   </main>
 
   <footer class="site-footer">
-    <div class="content-column footer-inner">
-      <div class="footer-legal">
-        <a href="index.html">Home</a>
-        <a href="terms.html">Terms &amp; Conditions</a>
-        <a href="privacy.html">Privacy Policy</a>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="index.html#top" aria-label="Presage home"><img src="./Assets/Logo.png" alt="Presage"></a>
+          <p class="footer-desc">Presage is a retention studio. We grow email and SMS revenue by building the story customers stay for, then running the system that turns it into lasting revenue.</p>
+          <a class="button button-primary button-glow js-cta" href="index.html#booking">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Navigate</p>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html#first-60-days">The method</a>
+            <a href="index.html#how-it-works">How it works</a>
+            <a href="index.html#results">Results</a>
+            <a href="index.html#faqs">FAQ</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Get in touch</p>
+          <a class="footer-link js-cta" href="index.html#booking">Book a strategy call</a>
+          <div class="footer-social">
+            <a href="#" aria-label="Presage on LinkedIn" data-social="linkedin" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/presage.retention" aria-label="Presage on Instagram" data-social="instagram" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" aria-label="Presage on X" data-social="x" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.2 8.26L23.3 22h-6.6l-5.17-6.76L5.6 22H2.5l7.7-8.83L1.6 2h6.77l4.67 6.18L18.9 2zm-1.16 18.1h1.72L7.32 3.8H5.47L17.74 20.1z"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
-      <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
+      <div class="footer-bottom">
+        <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+        </div>
+      </div>
     </div>
   </footer>
 

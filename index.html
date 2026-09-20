@@ -18,12 +18,15 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" data-header>
-    <nav class="nav-shell" aria-label="Primary navigation">
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
+      <img src="./Assets/favicon.png" alt="" width="64" height="64">
+    </button>
+    <nav class="nav-shell" id="primary-nav" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Presage home">
         <img src="./Assets/Logo.png" alt="Presage">
       </a>
       <div class="nav-links">
-        <a href="#method">The method</a>
+        <a href="#first-60-days">The method</a>
         <a href="#how-it-works">How it works</a>
         <a href="#results">Results</a>
         <a href="#faqs">FAQ</a>
@@ -86,12 +89,12 @@
           </div>
         </div>
       </div>
-      <img class="hero-overlay" src="./Assets/hero-overlay.webp" alt="" aria-hidden="true" decoding="async">
+      <img class="hero-overlay" src="./Assets/hero-overlay.png" alt="" aria-hidden="true" decoding="async">
       <div class="hero-inner">
         <p class="hero-badge hero-rise"><span>Now taking two new brands for 4th quarter.</span><strong>One spot left</strong></p>
         <h1 class="hero-title hero-rise" id="hero-title"><span>Turning product into rituals</span><span>with emails as brand channel</span></h1>
-        <p class="hero-lede hero-rise"><span>We build your customer journey that feels like a brand experience and grow lifetime value</span><span>and repeat purchases with on-brand emails.</span></p>
-        <a class="button button-primary js-cta hero-rise" href="#booking">Schedule your free audit</a>
+        <p class="hero-lede hero-rise"><span>We build your customer journey that feels like a brand experience and grow lifetime value</span> <span>and repeat purchases with on-brand emails.</span></p>
+        <a class="button button-primary button-glow js-cta hero-rise" href="#booking">Schedule your free audit</a>
         <p class="hero-note hero-rise">No pitch on the first call.<br>You leave with a teardown either way.</p>
       </div>
       <div class="scroll-cue" aria-hidden="true"><span></span></div>
@@ -362,6 +365,7 @@
       <div class="booking-split reveal">
         <div class="booking-copy">
           <h2 id="booking-title">Ready to see where your email revenue is leaking?</h2>
+          <p>Leave with a clear picture of your current program and what a compounding version looks like.</p>
         </div>
         <div class="booking-calendar">
           <div class="calendly-inline-widget" data-url="https://calendly.com/sanjay-presageretention/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=1fab54" style="min-width:300px;height:660px;"></div>
@@ -371,31 +375,45 @@
   </main>
 
   <footer class="site-footer">
-    <div class="content-column footer-inner">
-      <a class="footer-logo" href="#top" aria-label="Presage home"><img src="./Assets/Logo.png" alt="Presage"></a>
-      <p>Presage is a retention studio. We grow email and SMS revenue by building the story customers stay for, then running the system that turns it into lasting revenue.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#method">The method</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#results">Results</a>
-        <a href="#faqs">FAQ</a>
-      </nav>
-      <div class="footer-social">
-        <a href="#" aria-label="Presage on LinkedIn" data-social="linkedin" rel="noopener" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-        </a>
-        <a href="#" aria-label="Presage on Instagram" data-social="instagram" rel="noopener" target="_blank">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href="#" aria-label="Presage on X" data-social="x" rel="noopener" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.2 8.26L23.3 22h-6.6l-5.17-6.76L5.6 22H2.5l7.7-8.83L1.6 2h6.77l4.67 6.18L18.9 2zm-1.16 18.1h1.72L7.32 3.8H5.47L17.74 20.1z"/></svg>
-        </a>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="#top" aria-label="Presage home"><img src="./Assets/Logo.png" alt="Presage"></a>
+          <p class="footer-desc">Presage is a retention studio. We grow email and SMS revenue by building the story customers stay for, then running the system that turns it into lasting revenue.</p>
+          <a class="button button-primary button-glow js-cta" href="#booking">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Navigate</p>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="#first-60-days">The method</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#results">Results</a>
+            <a href="#faqs">FAQ</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Get in touch</p>
+          <a class="footer-link js-cta" href="#booking">Book a strategy call</a>
+          <div class="footer-social">
+            <a href="#" aria-label="Presage on LinkedIn" data-social="linkedin" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/presage.retention" aria-label="Presage on Instagram" data-social="instagram" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" aria-label="Presage on X" data-social="x" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.2 8.26L23.3 22h-6.6l-5.17-6.76L5.6 22H2.5l7.7-8.83L1.6 2h6.77l4.67 6.18L18.9 2zm-1.16 18.1h1.72L7.32 3.8H5.47L17.74 20.1z"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="footer-legal">
-        <a href="terms.html">Terms &amp; Conditions</a>
-        <a href="privacy.html">Privacy Policy</a>
+      <div class="footer-bottom">
+        <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+        </div>
       </div>
-      <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
     </div>
   </footer>
 

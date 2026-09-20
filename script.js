@@ -14,6 +14,24 @@ document.querySelectorAll("[data-year]").forEach((year) => {
 const header = document.querySelector("[data-header]");
 const hero = document.querySelector(".hero");
 
+// ---------- phone menu ----------
+const navToggle = document.querySelector("[data-nav-toggle]");
+if (header && navToggle) {
+  const setMenu = (open) => {
+    header.classList.toggle("is-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  };
+  navToggle.addEventListener("click", () => setMenu(!header.classList.contains("is-open")));
+  header.querySelectorAll(".nav-links a, .button-nav").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (header.classList.contains("is-open") && !header.contains(event.target)) setMenu(false);
+  });
+}
+
 if (header && hero) {
   const headerObserver = new IntersectionObserver(
     ([entry]) => header.classList.toggle("is-scrolled", !entry.isIntersecting),

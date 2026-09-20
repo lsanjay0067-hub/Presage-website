@@ -3,7 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
   <meta name="theme-color" content="#090f15">
   <link rel="icon" type="image/png" sizes="64x64" href="./Assets/favicon.png">
   <title>Terms & Conditions | Presage</title>
@@ -13,35 +12,88 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header is-scrolled" data-header>
-    <nav class="nav-shell" aria-label="Primary navigation">
-      <a class="brand" href="index.html" aria-label="Presage home">
+  <header class="site-header" data-header>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
+      <img src="./Assets/favicon.png" alt="" width="64" height="64">
+    </button>
+    <nav class="nav-shell" id="primary-nav" aria-label="Primary navigation">
+      <a class="brand" href="index.html#top" aria-label="Presage home">
         <img src="./Assets/Logo.png" alt="Presage">
       </a>
       <div class="nav-links">
-        <a href="index.html#method">The method</a>
+        <a href="index.html#first-60-days">The method</a>
         <a href="index.html#how-it-works">How it works</a>
         <a href="index.html#results">Results</a>
         <a href="index.html#faqs">FAQ</a>
       </div>
-      <a class="button button-nav" href="index.html#booking">Book a call</a>
+      <a class="button button-nav js-cta" href="index.html#booking">Book a call</a>
     </nav>
   </header>
 
   <main class="legal-page">
     <h1>Terms & Conditions</h1>
-    <p class="legal-updated">Last updated <span data-year></span></p>
-    <p>This page is being written. The full terms & conditions for Presage will be published here shortly. In the meantime, questions about how we work with your data or the terms of an engagement can be raised on a discovery call, or by replying to any email from Presage.</p>
+    <p class="legal-updated">Last updated September 2026</p>
+    <p>These terms set out how Presage works with clients. By booking a call, starting an engagement, or using this website, you agree to them. If anything here is unclear, ask before work begins; we would rather settle it up front than argue about it later.</p>
+
+    <h2>What we do</h2>
+    <p>Presage designs and runs email and SMS retention programs for ecommerce brands: strategy, flow architecture, campaign design and copy, segmentation, deliverability, and reporting. The scope of each engagement is agreed in writing before work starts. Anything outside that scope is quoted separately.</p>
+
+    <h2>Fees and payment</h2>
+    <p>Work is billed as a flat monthly retainer agreed before the engagement begins. Invoices are issued at the start of each month and are due within fourteen days. Late payment may pause work until the account is settled. The first ninety days form an initial term; after that the engagement continues month to month and either side can end it with thirty days' written notice.</p>
+
+    <h2>Your accounts, your data</h2>
+    <p>Your Klaviyo, Shopify, and any other platform accounts remain yours at all times. Presage works under named, least-privilege access that you grant and can revoke. Everything we build inside your accounts, including flows, templates, segments, and copy, belongs to you once the invoice covering that work has been paid.</p>
+
+    <h2>Confidentiality</h2>
+    <p>We treat your revenue figures, customer data, product plans, and anything else you share with us as confidential, and we expect the same in return for our methods and pricing. Neither side will disclose the other's confidential information to third parties except where the law requires it. We may describe results in aggregate, without naming you, unless you agree otherwise in writing.</p>
+
+    <h2>Results and liability</h2>
+    <p>We commit to the quality of our work, not to a specific revenue outcome; email and SMS performance depends on factors outside our control, including your product, pricing, list quality, and platform changes. Our total liability under any engagement is limited to the fees paid for the month in which the issue arose. We are not liable for indirect or consequential losses.</p>
+
+    <h2>Changes</h2>
+    <p>We may update these terms from time to time. Material changes will be communicated to active clients directly; the version on this page is the one that applies to new engagements.</p>
   </main>
 
   <footer class="site-footer">
-    <div class="content-column footer-inner">
-      <div class="footer-legal">
-        <a href="index.html">Home</a>
-        <a href="terms.html">Terms &amp; Conditions</a>
-        <a href="privacy.html">Privacy Policy</a>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="index.html#top" aria-label="Presage home"><img src="./Assets/Logo.png" alt="Presage"></a>
+          <p class="footer-desc">Presage is a retention studio. We grow email and SMS revenue by building the story customers stay for, then running the system that turns it into lasting revenue.</p>
+          <a class="button button-primary button-glow js-cta" href="index.html#booking">Book a call</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Navigate</p>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html#first-60-days">The method</a>
+            <a href="index.html#how-it-works">How it works</a>
+            <a href="index.html#results">Results</a>
+            <a href="index.html#faqs">FAQ</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <p class="footer-label">Get in touch</p>
+          <a class="footer-link js-cta" href="index.html#booking">Book a strategy call</a>
+          <div class="footer-social">
+            <a href="#" aria-label="Presage on LinkedIn" data-social="linkedin" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/presage.retention" aria-label="Presage on Instagram" data-social="instagram" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="#" aria-label="Presage on X" data-social="x" rel="noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.2 8.26L23.3 22h-6.6l-5.17-6.76L5.6 22H2.5l7.7-8.83L1.6 2h6.77l4.67 6.18L18.9 2zm-1.16 18.1h1.72L7.32 3.8H5.47L17.74 20.1z"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
-      <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
+      <div class="footer-bottom">
+        <p class="fine-print">© <span data-year></span> Presage. Email and SMS retention.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms &amp; Conditions</a>
+        </div>
+      </div>
     </div>
   </footer>
 
