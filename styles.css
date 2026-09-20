@@ -5,8 +5,8 @@
   --white: #f4f4f4;
   --grey-2: #cfcfcf;
   --grey-3: #9a9a9a;
-  --surface-1: #1c1c1c;
-  --surface-2: #232323;
+  --surface-1: #161616;
+  --surface-2: #1d1d1d;
   --surface-nav-scrolled: rgba(9, 15, 21, 0.88);
   --nav-link: #7a7a7a;
   --nav-link-hover: #ececec;
@@ -149,7 +149,17 @@ p {
 
 .section {
   padding-block: var(--section-space);
-  scroll-margin-top: 112px;
+}
+
+/* Below-the-fold sections skip layout and paint until they approach the viewport. */
+.offer-section,
+.process-section,
+.proof-section,
+.faq-section,
+.booking-section,
+.site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
 }
 
 .site-header {
@@ -320,7 +330,7 @@ p {
   height: var(--wall-h);
   flex: 0 0 auto;
   object-fit: cover;
-  opacity: 0.21;
+  opacity: 0.24;
 }
 
 .hero-overlay {
@@ -708,7 +718,7 @@ p {
   padding: 22px 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  background: #1c1c1c;
+  background: var(--surface-1);
   opacity: 0.32;
   transition: opacity 420ms ease;
 }
@@ -1711,7 +1721,7 @@ body.has-modal {
 @media (hover: hover) and (pointer: fine) {
   .offer-item:hover {
     border-color: rgba(255, 255, 255, 0.14);
-    background: #191919;
+    background: #1c1c1c;
     transform: translateY(-2px);
   }
 }
