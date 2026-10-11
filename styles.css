@@ -1,4 +1,6 @@
 :root {
+  /* Klaviyo partner badge: 0 hides it, 1 shows it again. */
+  --klaviyo-badge-opacity: 0;
   --bg: #090f15;
   --green: #bdf7b8;
   --green-dim: rgba(189, 247, 184, 0.24);
@@ -208,6 +210,10 @@ p {
 .brand-name {
   width: auto;
   height: 64px;
+}
+
+.klaviyo-badge {
+  opacity: var(--klaviyo-badge-opacity);
 }
 
 .nav-links {
