@@ -14,9 +14,7 @@ No pitch on the first call. You leave with a teardown either way.
 
 Built on the platforms you already run: Klaviyo and Shopify.
 
-## Presage retention studio
-
-Presage grows your email and SMS revenue by building the story your customers stay for, then turning that story into the flows, campaigns, and ritual that keep them buying. We run narrative first and multi channel activation, so the revenue compounds instead of fading the moment a code expires.
+## At a glance
 
 - **35x**: average ROI
 - **6/4**: the narrative-to-activation ratio
