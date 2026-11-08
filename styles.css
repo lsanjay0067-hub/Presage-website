@@ -242,11 +242,11 @@ p {
   color: #ffffff;
 }
 
-/* Hovered link, and the link for the section in view, dim to grey. */
+/* Hovered link, and the link for the section in view, turn brand green. */
 .nav-links a:hover,
 .nav-links a:focus-visible,
 .nav-links a.is-active {
-  color: var(--nav-link);
+  color: var(--green);
 }
 
 .button {
