@@ -267,13 +267,13 @@ p {
 }
 
 .button-primary {
-  background: #f7f7f7;
+  background: var(--green);
   color: #151515;
 }
 
 .button-primary:hover,
 .button-primary:focus-visible {
-  background: #ffffff;
+  background: #d3fbcf;
 }
 
 .button-nav {
@@ -435,7 +435,7 @@ p {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 0 28px rgba(255, 255, 255, 0.38), 0 0 66px rgba(189, 247, 184, 0.3);
+  box-shadow: 0 0 0 1px rgba(189, 247, 184, 0.6), 0 0 28px rgba(189, 247, 184, 0.4), 0 0 66px rgba(189, 247, 184, 0.3);
   content: "";
   opacity: 0;
   transition: opacity 260ms ease;
@@ -449,9 +449,9 @@ p {
 }
 
 .button-glow:active {
-  border-color: #ffffff;
+  border-color: var(--green);
   background: transparent;
-  color: #ffffff;
+  color: var(--green);
 }
 
 .button-glow:active::after {
@@ -543,46 +543,12 @@ p {
   background: var(--line-1);
 }
 
-/* ---------- studio ---------- */
-
-.studio-section {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 40px;
-  align-items: start;
-  width: min(920px, calc(100% - 40px));
-  margin-inline: auto;
-  padding: clamp(56px, 7vw, 88px) 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.studio-name {
-  margin: 0;
-  color: #686868;
-  font-family: var(--font-display);
-  font-size: clamp(30px, 3.1vw, 44px);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-
-.studio-body {
-  margin: 0;
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.85;
-  letter-spacing: -0.02em;
-}
-
 /* ---------- stats ---------- */
 
 .stats-section {
   width: min(920px, calc(100% - 40px));
   margin-inline: auto;
-  padding: 0 0 clamp(56px, 7vw, 88px);
+  padding: clamp(28px, 4vw, 48px) 0 clamp(56px, 7vw, 88px);
 }
 
 .stats {
@@ -1597,11 +1563,6 @@ body.has-modal {
     font-size: 18px;
   }
 
-  .studio-section {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
   .stats {
     gap: 16px;
   }
@@ -1665,15 +1626,6 @@ body.has-modal {
     min-height: 44px;
     padding: 0 22px;
     font-size: 16px;
-  }
-
-  .studio-name {
-    font-size: 30px;
-  }
-
-  .studio-body {
-    font-size: 13px;
-    line-height: 1.75;
   }
 
   .stats {
