@@ -238,6 +238,12 @@ p {
   color: var(--nav-link-hover);
 }
 
+.nav-links a,
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: #ffffff;
+}
+
 .button {
   display: inline-flex;
   min-height: 44px;
