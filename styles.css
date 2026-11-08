@@ -336,7 +336,7 @@ p {
   height: var(--wall-h);
   flex: 0 0 auto;
   object-fit: cover;
-  opacity: 0.24;
+  opacity: 0.36;
 }
 
 .hero-overlay {
