@@ -238,10 +238,15 @@ p {
   color: var(--nav-link-hover);
 }
 
-.nav-links a,
-.nav-links a:hover,
-.nav-links a.is-active {
+.nav-links a {
   color: #ffffff;
+}
+
+/* Hovered link, and the link for the section in view, dim to grey. */
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.is-active {
+  color: var(--nav-link);
 }
 
 .button {
