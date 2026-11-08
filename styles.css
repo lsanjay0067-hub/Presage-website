@@ -238,6 +238,17 @@ p {
   color: var(--nav-link-hover);
 }
 
+.nav-links a {
+  color: #ffffff;
+}
+
+/* Hovered link, and the link for the section in view, turn brand green. */
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.is-active {
+  color: var(--green);
+}
+
 .button {
   display: inline-flex;
   min-height: 44px;
