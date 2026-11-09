@@ -142,6 +142,17 @@ document.querySelectorAll("[data-faq]").forEach((faq) => {
   });
 });
 
+// ---------- FAQ: phones show three questions until expanded ----------
+const faqMore = document.querySelector("[data-faq-more]");
+const faqList = document.querySelector("#faq-list");
+if (faqMore && faqList) {
+  faqMore.addEventListener("click", () => {
+    const expanded = faqList.classList.toggle("is-expanded");
+    faqMore.setAttribute("aria-expanded", String(expanded));
+    faqMore.textContent = expanded ? "Show fewer questions" : "Show all questions";
+  });
+}
+
 const bookingModal = document.querySelector("[data-booking-modal]");
 const calendlyParent = bookingModal?.querySelector("[data-calendly-parent]");
 let calendlyMounted = false;
@@ -266,16 +277,66 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeBooking();
 });
 
-// ---------- horizontal email strip: pause when out of view ----------
+// ---------- horizontal email strip: wave in when seen, pause when out of view ----------
 const strip = document.querySelector("[data-strip]");
 if (strip && "IntersectionObserver" in window) {
-  new IntersectionObserver(([entry]) => strip.classList.toggle("is-idle", !entry.isIntersecting), { threshold: 0 }).observe(strip);
+  new IntersectionObserver(([entry]) => {
+    strip.classList.toggle("is-idle", !entry.isIntersecting);
+    if (entry.isIntersecting) strip.classList.add("is-waving");
+  }, { threshold: 0.15 }).observe(strip);
+} else if (strip) {
+  strip.classList.add("is-waving");
+}
+
+// ---------- hero: content fades out as it scrolls away ----------
+// Writes opacity/transform straight onto the four layers (compositor-only
+// properties) instead of a custom property that restyles the whole hero.
+if (hero && !prefersReducedMotion) {
+  const heroInner = hero.querySelector(".hero-inner");
+  const heroBackdrop = [".hero-wall", ".hero-streaks"].map((sel) => hero.querySelector(sel)).filter(Boolean);
+  const heroAtmos = hero.querySelector(".hero-atmos");
+  let fadeQueued = false;
+  let lastFade = -1;
+  const paintFade = () => {
+    fadeQueued = false;
+    const fade = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.85)));
+    if (Math.abs(fade - lastFade) < 0.002) return;
+    lastFade = fade;
+    if (heroInner) {
+      heroInner.style.opacity = String(Math.max(0, 1 - fade * 1.2));
+      heroInner.style.transform = `translate3d(0, ${(-48 * fade).toFixed(1)}px, 0)`;
+    }
+    heroBackdrop.forEach((el) => { el.style.opacity = String(1 - fade * 0.85); });
+    if (heroAtmos) heroAtmos.style.opacity = String(1 - fade * 0.6);
+  };
+  const queueFade = () => {
+    if (fadeQueued || (lastFade === 1 && window.scrollY > hero.offsetHeight)) return;
+    fadeQueued = true;
+    requestAnimationFrame(paintFade);
+  };
+  window.addEventListener("scroll", queueFade, { passive: true });
+  window.addEventListener("resize", queueFade);
+  paintFade();
 }
 
 // ---------- first 60 days: circles light as the rail fills on scroll ----------
 const days = document.querySelector("[data-days]");
 if (days) {
   const steps = [...days.querySelectorAll("[data-days-step]")];
+
+  // Each card grows from small to full size the first time it scrolls in.
+  if ("IntersectionObserver" in window && !prefersReducedMotion) {
+    const growObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-grown");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.25, rootMargin: "0px 0px -8%" });
+    steps.forEach((step) => growObserver.observe(step));
+  } else {
+    steps.forEach((step) => step.classList.add("is-grown"));
+  }
   const nums = steps.map((step) => step.querySelector(".days-num"));
   const rail = days.querySelector(".days-rail");
   const fill = days.querySelector("[data-days-fill]");

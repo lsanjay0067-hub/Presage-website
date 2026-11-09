@@ -361,7 +361,7 @@ p {
   height: var(--wall-h);
   flex: 0 0 auto;
   object-fit: cover;
-  opacity: 0.36;
+  opacity: 0.28;
 }
 
 .hero-overlay {
@@ -378,6 +378,78 @@ p {
   z-index: 1;
   width: min(1120px, 100%);
   padding: 0 20px;
+}
+
+/* ---------- hero streaks: soft tech-blue light trails in motion ----------
+   Each streak is a pre-blurred #072D6C arc (Assets/hero-streak.webp) that
+   slides along a shared diagonal. Only transform and opacity animate, so the
+   motion stays on the compositor with no per-frame blur. */
+
+.hero-streaks {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-streaks span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  aspect-ratio: 2.6;
+  background: url("Assets/hero-streak.webp") center / 100% 100% no-repeat;
+  opacity: 0;
+  transform: rotate(-32deg) translate3d(-38vw, 0, 0);
+  animation: streak-sweep 7.5s cubic-bezier(0.55, 0, 0.2, 1) infinite;
+  animation-delay: calc(var(--s) * 1.05s);
+  will-change: transform, opacity;
+}
+
+.hero.is-idle .hero-streaks span,
+.hero.is-idle .hero-atmos::before {
+  animation-play-state: paused;
+}
+
+/* ---------- hero atmosphere: light sweep, dark vignette, fine grain ---------- */
+
+.hero-atmos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 12% 18%, rgba(3, 6, 10, 0.55), transparent 70%),
+    radial-gradient(120% 90% at 50% 42%, transparent 45%, rgba(4, 7, 11, 0.7) 100%),
+    linear-gradient(180deg, transparent 72%, var(--bg) 100%);
+  pointer-events: none;
+}
+
+/* Soft diagonal light leak from the top right, drifting slowly. */
+.hero-atmos::before {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(40% 48% at 84% 10%, rgba(226, 236, 255, 0.44), rgba(140, 172, 228, 0.16) 45%, transparent 72%),
+    linear-gradient(
+      124deg,
+      transparent 58%,
+      rgba(7, 45, 108, 0.24) 64%,
+      rgba(160, 188, 236, 0.14) 70%,
+      rgba(226, 236, 255, 0.16) 76%,
+      transparent 90%
+    );
+  content: "";
+  will-change: transform, opacity;
+  animation: light-drift 16s ease-in-out infinite alternate;
+}
+
+/* Static film grain, kept faint. */
+.hero-atmos::after {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  content: "";
 }
 
 .hero-badge {
@@ -485,37 +557,10 @@ p {
 }
 
 .hero-note {
-  margin: 22px 0 0;
-  color: #818181;
-  font-family: var(--font-heading);
-  font-size: 12px;
-  line-height: 1.35;
-  letter-spacing: -0.04em;
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 34px;
-  left: 50%;
-  z-index: 1;
-  width: 13px;
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.scroll-cue span {
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  width: 3px;
-  height: 3px;
-  margin-left: -1.5px;
-  border-radius: 50%;
-  background: #ffffff;
-  animation: scroll-cue 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  margin: 14px 0 0;
+  color: #9a9a9a;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .hero-rise {
@@ -546,7 +591,7 @@ p {
 .stats-section {
   width: min(920px, calc(100% - 40px));
   margin-inline: auto;
-  padding: clamp(56px, 7vw, 88px) 0;
+  padding: clamp(40px, 5vw, 64px) 0 0;
 }
 
 .stats {
@@ -588,7 +633,7 @@ p {
 /* ---------- email strip ---------- */
 
 .strip-section {
-  padding: 0 0 clamp(56px, 7vw, 88px);
+  padding: clamp(56px, 7vw, 88px) 0;
 }
 
 .strip {
@@ -614,6 +659,21 @@ p {
   flex: 0 0 auto;
   aspect-ratio: 524 / 1120;
   object-fit: cover;
+}
+
+/* Wave: each card bobs a little ahead of the one to its left, so the crest
+   travels right to left. Starts once the strip is on screen. */
+.strip {
+  padding-block: 18px;
+}
+
+.strip.is-waving .strip-track img {
+  animation: strip-wave 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.21s);
+}
+
+.strip.is-idle .strip-track img {
+  animation-play-state: paused;
 }
 
 .strip-cta,
@@ -690,7 +750,13 @@ p {
   border-radius: 14px;
   background: var(--surface-1);
   opacity: 0.32;
-  transition: opacity 420ms ease;
+  transform: scale(0.82);
+  transform-origin: left center;
+  transition: opacity 420ms ease, transform 760ms var(--ease-out);
+}
+
+.days-step.is-grown .days-card {
+  transform: scale(1);
 }
 
 .days-card h3 {
@@ -855,6 +921,26 @@ p {
 
 /* ---------- faq ---------- */
 
+.faq-more {
+  display: none;
+  justify-content: center;
+  width: fit-content;
+  margin: 18px auto 0;
+  padding: 12px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: transparent;
+  color: #ffffff;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.faq-more:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
 .faq-section {
   border-top: 1px solid var(--line-2);
 }
@@ -999,7 +1085,7 @@ p {
 /* ---------- footer ---------- */
 
 .site-footer {
-  padding: 64px 0 28px;
+  padding: 64px 0 clamp(48px, 6vw, 80px);
   border-top: 1px solid var(--line-2);
   background: #000000;
 }
@@ -1362,20 +1448,31 @@ body.has-modal {
 }
 
 @keyframes strip-scroll {
-  from { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
-  to { transform: translate3d(0, 0, 0); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
+}
+
+@keyframes strip-wave {
+  0%, 100% { translate: 0 10px; }
+  50% { translate: 0 -10px; }
+}
+
+@keyframes light-drift {
+  from { transform: translate3d(3%, -3%, 0); opacity: 0.75; }
+  to { transform: translate3d(-2%, 2%, 0); opacity: 1; }
+}
+
+@keyframes streak-sweep {
+  0% { opacity: 0; transform: rotate(-32deg) translate3d(-38vw, 0, 0); }
+  7% { opacity: 1; }
+  30% { opacity: 1; }
+  40% { opacity: 0; transform: rotate(-32deg) translate3d(38vw, 0, 0); }
+  100% { opacity: 0; transform: rotate(-32deg) translate3d(38vw, 0, 0); }
 }
 
 @keyframes soft-pulse {
   0%, 100% { opacity: 0.42; }
   50% { opacity: 1; }
-}
-
-@keyframes scroll-cue {
-  0% { transform: translateY(0); opacity: 0; }
-  18% { opacity: 1; }
-  68% { opacity: 1; }
-  100% { transform: translateY(19px); opacity: 0; }
 }
 
 @keyframes modal-in {
@@ -1445,66 +1542,116 @@ body.has-modal {
     display: none;
   }
 
+  /* Phone nav: a full-width pill with the wordmark on the left and a
+     round menu button on the right; it expands into a panel when open. */
+  .nav-shell {
+    position: relative;
+    grid-template-columns: 1fr;
+    width: calc(100% - 24px);
+    min-height: 64px;
+    padding: 0 76px 0 10px;
+    border: 1px solid rgba(70, 110, 200, 0.35);
+    border-radius: 32px;
+    background: rgba(6, 10, 22, 0.88);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: border-radius 260ms ease, background 260ms ease;
+  }
+
+  .brand {
+    min-height: 64px;
+    padding-left: 12px;
+  }
+
+  .brand img {
+    height: 28px;
+  }
+
+  .nav-links,
+  .button-nav {
+    display: none;
+  }
+
   .nav-toggle {
     position: absolute;
-    top: 0;
-    left: 12px;
+    top: 7px;
+    right: calc(12px + 7px);
     z-index: 2;
     display: grid;
-    width: 44px;
-    height: 44px;
+    width: 64px;
+    height: 50px;
     padding: 0;
     place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 12px;
-    background: rgba(9, 15, 21, 0.85);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    border: 0;
+    border-radius: 25px;
+    background: rgba(40, 60, 120, 0.35);
+    color: #ffffff;
     cursor: pointer;
     pointer-events: auto;
   }
 
-  .nav-toggle img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
+  .nav-toggle-lines {
+    display: grid;
+    gap: 5px;
+    justify-items: end;
+    width: 24px;
   }
 
-  .nav-shell {
-    display: none;
+  .nav-toggle-lines span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 260ms var(--ease-out), opacity 200ms ease, width 260ms ease;
+  }
+
+  .nav-toggle-lines span:nth-child(2) {
+    width: 18px;
+  }
+
+  .nav-toggle-lines span:nth-child(3) {
+    width: 21px;
+  }
+
+  .site-header.is-open .nav-toggle-lines span {
+    width: 24px;
+  }
+
+  .site-header.is-open .nav-toggle-lines span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-header.is-open .nav-toggle-lines span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header.is-open .nav-toggle-lines span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   .site-header.is-open .nav-shell {
-    position: absolute;
-    top: 54px;
-    left: 12px;
-    display: grid;
-    grid-template-columns: 1fr;
     gap: 4px;
-    width: min(300px, calc(100vw - 24px));
-    margin: 0;
-    padding: 10px;
-    border-color: rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    background: rgba(9, 15, 21, 0.96);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-  }
-
-  .site-header.is-open .brand {
-    display: none;
+    padding-bottom: 14px;
+    border-radius: 28px;
+    background: rgba(6, 10, 22, 0.97);
   }
 
   .site-header.is-open .nav-links {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
+    padding-right: 0;
+    margin-right: -66px;
   }
 
   .site-header.is-open .nav-links a {
     display: block;
-    padding: 11px 10px;
-    border-radius: 10px;
-    font-size: 16px;
+    padding: 12px 12px;
+    border-radius: 12px;
+    font-size: 17px;
   }
 
   .site-header.is-open .nav-links a:hover,
@@ -1513,11 +1660,12 @@ body.has-modal {
   }
 
   .site-header.is-open .button-nav {
+    display: inline-flex;
     justify-content: center;
-    width: 100%;
-    min-height: 42px;
-    margin-top: 6px;
-    font-size: 13px;
+    width: calc(100% + 66px);
+    min-height: 46px;
+    margin-top: 8px;
+    font-size: 14px;
   }
 
   .footer-grid {
@@ -1602,10 +1750,6 @@ body.has-modal {
     display: none;
   }
 
-  .brand img {
-    height: 22px;
-  }
-
   .partner-badge {
     height: 32px;
   }
@@ -1632,12 +1776,37 @@ body.has-modal {
   }
 
   .stats {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .stat {
-    min-height: 140px;
+    aspect-ratio: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    gap: 6px;
+    padding: 10px 6px;
+    border-radius: 14px;
+  }
+
+  .stat strong {
+    font-size: clamp(28px, 9vw, 38px);
+  }
+
+  .stat span {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  /* FAQ: first three on phones, the rest behind a toggle. */
+  .faq-grid:not(.is-expanded) .faq-item:nth-child(n + 4) {
+    display: none;
+  }
+
+  .faq-more {
+    display: flex;
   }
 
   .days-step {
@@ -1710,17 +1879,16 @@ body.has-modal {
 
   .hero-col-track,
   .strip-track,
-  .hero-badge strong::after,
-  .scroll-cue span {
+  .strip.is-waving .strip-track img,
+  .hero-streaks span,
+  .hero-atmos::before,
+  .hero-badge strong::after {
     animation: none;
-  }
-
-  .scroll-cue span {
-    opacity: 0.85;
   }
 
   .days-card {
     opacity: 1;
+    transform: none;
   }
 }
 

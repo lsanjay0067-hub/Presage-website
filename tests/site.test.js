@@ -72,3 +72,45 @@ test('every image the homepage references exists', async () => {
   assert.ok(srcs.size > 10);
   for (const src of srcs) await access(new URL(src, root));
 });
+
+test('stats sit between the email carousel and its CTA', async () => {
+  const html = await read('index.html');
+  const strip = html.indexOf('data-strip');
+  const stats = html.indexOf('class="stats-section"');
+  const cta = html.indexOf('class="strip-cta');
+  assert.ok(strip > 0 && stats > strip && cta > stats);
+});
+
+test('animations: hero streaks, carousel wave, growing day cards, all off for reduced motion', async () => {
+  const html = await read('index.html');
+  assert.match(html, /<div class="hero-streaks" aria-hidden="true">/);
+  assert.ok(!html.includes('scroll-cue'));
+  assert.equal((html.match(/<img style="--i:\d+" src="Assets\/email-/g) || []).length, 20);
+  const css = await read('styles.css');
+  assert.match(css, /\.hero-streaks span \{[^}]*Assets\/hero-streak\.webp/);
+  assert.ok(!css.includes('scroll-cue'));
+  assert.match(css, /\.strip\.is-waving \.strip-track img \{[^}]*animation: strip-wave/);
+  assert.match(css, /\.days-step\.is-grown \.days-card \{\s*transform: scale\(1\);/);
+  const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+  for (const selector of ['.strip.is-waving .strip-track img', '.hero-streaks span']) {
+    assert.ok(reduced.includes(selector), selector);
+  }
+  const js = await read('script.js');
+  assert.match(js, /heroInner\.style\.opacity/);
+  assert.match(js, /is-grown/);
+});
+
+test('phone: hamburger nav, three FAQs with a toggle, square stats', async () => {
+  for (const page of PAGES) {
+    const html = await read(page);
+    assert.match(html, /<button class="nav-toggle"[^>]*>\s*<span class="nav-toggle-lines" aria-hidden="true"><span><\/span><span><\/span><span><\/span><\/span>/, page);
+  }
+  const html = await read('index.html');
+  assert.match(html, /<button class="faq-more" type="button" aria-expanded="false" aria-controls="faq-list" data-faq-more>/);
+  const css = await read('styles.css');
+  const phone = css.slice(css.indexOf('@media (max-width: 540px)'));
+  assert.match(phone, /\.faq-grid:not\(\.is-expanded\) \.faq-item:nth-child\(n \+ 4\) \{\s*display: none;/);
+  assert.match(phone, /\.stat \{\s*aspect-ratio: 1;/);
+  const js = await read('script.js');
+  assert.match(js, /data-faq-more/);
+});
