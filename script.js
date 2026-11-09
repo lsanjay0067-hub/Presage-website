@@ -289,15 +289,28 @@ if (strip && "IntersectionObserver" in window) {
 }
 
 // ---------- hero: content fades out as it scrolls away ----------
+// Writes opacity/transform straight onto the four layers (compositor-only
+// properties) instead of a custom property that restyles the whole hero.
 if (hero && !prefersReducedMotion) {
+  const heroInner = hero.querySelector(".hero-inner");
+  const heroBackdrop = [".hero-wall", ".hero-streaks"].map((sel) => hero.querySelector(sel)).filter(Boolean);
+  const heroAtmos = hero.querySelector(".hero-atmos");
   let fadeQueued = false;
+  let lastFade = -1;
   const paintFade = () => {
     fadeQueued = false;
-    const progress = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.85)));
-    hero.style.setProperty("--hero-fade", progress.toFixed(3));
+    const fade = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.85)));
+    if (Math.abs(fade - lastFade) < 0.002) return;
+    lastFade = fade;
+    if (heroInner) {
+      heroInner.style.opacity = String(Math.max(0, 1 - fade * 1.2));
+      heroInner.style.transform = `translate3d(0, ${(-48 * fade).toFixed(1)}px, 0)`;
+    }
+    heroBackdrop.forEach((el) => { el.style.opacity = String(1 - fade * 0.85); });
+    if (heroAtmos) heroAtmos.style.opacity = String(1 - fade * 0.6);
   };
   const queueFade = () => {
-    if (fadeQueued || window.scrollY > hero.offsetHeight * 1.2) return;
+    if (fadeQueued || (lastFade === 1 && window.scrollY > hero.offsetHeight)) return;
     fadeQueued = true;
     requestAnimationFrame(paintFade);
   };

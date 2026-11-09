@@ -378,39 +378,35 @@ p {
   z-index: 1;
   width: min(1120px, 100%);
   padding: 0 20px;
-  opacity: calc(1 - var(--hero-fade, 0) * 1.2);
-  translate: 0 calc(var(--hero-fade, 0) * -48px);
 }
 
-.hero-wall,
-.hero-streaks {
-  opacity: calc(1 - var(--hero-fade, 0) * 0.85);
-}
-
-/* ---------- hero streaks: soft tech-blue light trails in motion ---------- */
+/* ---------- hero streaks: soft tech-blue light trails in motion ----------
+   Each streak is a pre-blurred #072D6C arc (Assets/hero-streak.webp) that
+   slides along a shared diagonal. Only transform and opacity animate, so the
+   motion stays on the compositor with no per-frame blur. */
 
 .hero-streaks {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  filter: blur(9px);
+  overflow: hidden;
   pointer-events: none;
 }
 
-.hero-streak {
-  fill: none;
-  stroke: #072d6c;
-  stroke-width: 10;
-  stroke-linecap: round;
-  stroke-dasharray: 0.28 1.6;
-  stroke-dashoffset: 0.28;
+.hero-streaks span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  aspect-ratio: 2.6;
+  background: url("Assets/hero-streak.webp") center / 100% 100% no-repeat;
   opacity: 0;
+  transform: rotate(-32deg) translate3d(-38vw, 0, 0);
   animation: streak-sweep 7.5s cubic-bezier(0.55, 0, 0.2, 1) infinite;
   animation-delay: calc(var(--s) * 1.05s);
+  will-change: transform, opacity;
 }
 
-.hero.is-idle .hero-streak,
+.hero.is-idle .hero-streaks span,
 .hero.is-idle .hero-atmos::before {
   animation-play-state: paused;
 }
@@ -425,7 +421,6 @@ p {
     radial-gradient(60% 55% at 12% 18%, rgba(3, 6, 10, 0.55), transparent 70%),
     radial-gradient(120% 90% at 50% 42%, transparent 45%, rgba(4, 7, 11, 0.7) 100%),
     linear-gradient(180deg, transparent 72%, var(--bg) 100%);
-  opacity: calc(1 - var(--hero-fade, 0) * 0.6);
   pointer-events: none;
 }
 
@@ -443,8 +438,8 @@ p {
       rgba(226, 236, 255, 0.16) 76%,
       transparent 90%
     );
-  filter: blur(28px);
   content: "";
+  will-change: transform, opacity;
   animation: light-drift 16s ease-in-out infinite alternate;
 }
 
@@ -566,31 +561,6 @@ p {
   color: #9a9a9a;
   font-size: 14px;
   line-height: 1.45;
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 34px;
-  left: 50%;
-  z-index: 1;
-  width: 13px;
-  height: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.scroll-cue span {
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  width: 3px;
-  height: 3px;
-  margin-left: -1.5px;
-  border-radius: 50%;
-  background: #ffffff;
-  animation: scroll-cue 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .hero-rise {
@@ -1493,23 +1463,16 @@ body.has-modal {
 }
 
 @keyframes streak-sweep {
-  0% { stroke-dashoffset: 0.28; opacity: 0; }
-  6% { opacity: 1; }
+  0% { opacity: 0; transform: rotate(-32deg) translate3d(-38vw, 0, 0); }
+  7% { opacity: 1; }
   30% { opacity: 1; }
-  38% { stroke-dashoffset: -1; opacity: 0; }
-  100% { stroke-dashoffset: -1; opacity: 0; }
+  40% { opacity: 0; transform: rotate(-32deg) translate3d(38vw, 0, 0); }
+  100% { opacity: 0; transform: rotate(-32deg) translate3d(38vw, 0, 0); }
 }
 
 @keyframes soft-pulse {
   0%, 100% { opacity: 0.42; }
   50% { opacity: 1; }
-}
-
-@keyframes scroll-cue {
-  0% { transform: translateY(0); opacity: 0; }
-  18% { opacity: 1; }
-  68% { opacity: 1; }
-  100% { transform: translateY(19px); opacity: 0; }
 }
 
 @keyframes modal-in {
@@ -1917,27 +1880,15 @@ body.has-modal {
   .hero-col-track,
   .strip-track,
   .strip.is-waving .strip-track img,
-  .hero-streak,
+  .hero-streaks span,
   .hero-atmos::before,
-  .hero-badge strong::after,
-  .scroll-cue span {
+  .hero-badge strong::after {
     animation: none;
-  }
-
-  .scroll-cue span {
-    opacity: 0.85;
   }
 
   .days-card {
     opacity: 1;
     transform: none;
-  }
-
-  .hero-inner,
-  .hero-wall,
-  .hero-streaks {
-    opacity: 1;
-    translate: none;
   }
 }
 

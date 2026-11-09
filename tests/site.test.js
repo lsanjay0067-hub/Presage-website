@@ -83,18 +83,20 @@ test('stats sit between the email carousel and its CTA', async () => {
 
 test('animations: hero streaks, carousel wave, growing day cards, all off for reduced motion', async () => {
   const html = await read('index.html');
-  assert.match(html, /<svg class="hero-streaks"[^>]*aria-hidden="true"/);
+  assert.match(html, /<div class="hero-streaks" aria-hidden="true">/);
+  assert.ok(!html.includes('scroll-cue'));
   assert.equal((html.match(/<img style="--i:\d+" src="Assets\/email-/g) || []).length, 20);
   const css = await read('styles.css');
-  assert.match(css, /\.hero-streak \{[^}]*stroke: #072d6c;/);
+  assert.match(css, /\.hero-streaks span \{[^}]*Assets\/hero-streak\.webp/);
+  assert.ok(!css.includes('scroll-cue'));
   assert.match(css, /\.strip\.is-waving \.strip-track img \{[^}]*animation: strip-wave/);
   assert.match(css, /\.days-step\.is-grown \.days-card \{\s*transform: scale\(1\);/);
   const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
-  for (const selector of ['.strip.is-waving .strip-track img', '.hero-streak']) {
+  for (const selector of ['.strip.is-waving .strip-track img', '.hero-streaks span']) {
     assert.ok(reduced.includes(selector), selector);
   }
   const js = await read('script.js');
-  assert.match(js, /--hero-fade/);
+  assert.match(js, /heroInner\.style\.opacity/);
   assert.match(js, /is-grown/);
 });
 

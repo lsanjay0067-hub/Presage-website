@@ -52,7 +52,7 @@ The best fit is an ecommerce brand doing roughly one to eight million a year, wi
 
 ### Will you rebuild our Klaviyo flows?
 
-No. The Audit reads your brand, revenue mix, deliverability, data health, and twelve core flows, then ranks every gap by its impact on repeat revenue and lifetime value. We rebuild the flows that carry the revenue floor and keep what is already working.
+Only where it pays. The Audit reads your brand, revenue mix, deliverability, data health, and twelve core flows, then ranks every gap by its impact on repeat revenue and lifetime value. We rebuild the flows that carry the revenue floor and keep what is already working.
 
 ### How does pricing work?
 
