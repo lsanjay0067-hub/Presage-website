@@ -653,6 +653,7 @@ p {
 }
 
 .strip.is-entering .strip-track img {
+  transform-origin: 50% 100%;
   animation:
     strip-enter 1.15s var(--ease-out) var(--enter-delay, 0ms) both,
     strip-wave 4.2s ease-in-out calc(var(--i, 0) * -0.21s) infinite;
@@ -1439,8 +1440,9 @@ body.has-modal {
 }
 
 @keyframes strip-enter {
-  0% { opacity: 0; transform: translate3d(-48px, 90px, 0) rotate(-3deg) scale(0.94); }
-  55% { opacity: 1; transform: translate3d(0, -14px, 0) rotate(0.6deg) scale(1); }
+  0% { opacity: 0; transform: translate3d(-48px, 90px, 0) rotate(-3deg) scale(0.86, 1.28); }
+  45% { opacity: 1; transform: translate3d(0, -16px, 0) rotate(0.6deg) scale(1.06, 0.92); }
+  72% { transform: translate3d(0, 4px, 0) scale(0.98, 1.04); }
   100% { opacity: 1; transform: none; }
 }
 
