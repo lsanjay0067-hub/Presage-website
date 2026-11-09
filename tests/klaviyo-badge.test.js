@@ -9,5 +9,5 @@ test('Klaviyo partner badge opacity is driven by one CSS variable, currently sho
   assert.match(css, /:root \{[^}]*--klaviyo-badge-opacity: 1;/);
   assert.match(css, /\.klaviyo-badge \{\s*opacity: var\(--klaviyo-badge-opacity\);\s*\}/);
   const html = await read('index.html');
-  assert.match(html, /<img class="brand-name klaviyo-badge" src="\.\/Assets\/klaviyo-partner-badge-light\.png"/);
+  assert.match(html, /<img class="partner-badge klaviyo-badge" src="\.\/Assets\/klaviyo-partner-badge-light\.webp"/);
 });

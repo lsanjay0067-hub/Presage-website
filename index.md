@@ -6,13 +6,13 @@ Website: https://presageretention.com/
 Book a free audit call: https://calendly.com/sanjay-presageretention/30min
 Agent guide: https://presageretention.com/llms.txt
 
-## Turning product into rituals with emails as brand channel
+## Product into rituals with emails as brand channel
 
 We build your customer journey that feels like a brand experience and grow lifetime value and repeat purchases with on-brand emails.
 
 No pitch on the first call. You leave with a teardown either way.
 
-Built on the platforms you already run: Klaviyo and Shopify.
+Klaviyo partner and Shopify partner.
 
 ## At a glance
 
@@ -42,29 +42,37 @@ Built on the platforms you already run: Klaviyo and Shopify.
 
 ## FAQ
 
-### What exactly do you do?
+### We have an in-house marketer. What would Presage actually take off our plate?
 
-Full email and SMS retention for ecommerce brands. Strategy, flow architecture, campaign design and copy, deliverability, segmentation, and reporting, run end to end.
+The whole email and SMS channel, end to end: strategy, flow architecture, campaign design and copy, segmentation, deliverability, and reporting. Your team stays focused on product and growth while retention runs as its own system.
 
-### Who do you work with?
+### Is my brand the right size and stage to work with you?
 
-Ecommerce brands, typically doing one to eight million a year, with a list of fifteen thousand or more and a repeat-purchase or subscription model.
+The best fit is an ecommerce brand doing roughly one to eight million a year, with a list of fifteen thousand or more and a repeat-purchase or subscription model. If you are close to that, the free audit call will tell us both quickly whether it makes sense.
 
-### What does it cost?
+### Our Klaviyo flows are already live. Would you rebuild everything from scratch?
 
-A flat monthly retainer set by the size and scope of your program. We agree the number before work starts. After the first ninety days it runs month to month.
+No. The Audit reads your brand, revenue mix, deliverability, data health, and twelve core flows, then ranks every gap by its impact on repeat revenue and lifetime value. We rebuild the flows that carry the revenue floor and keep what is already working.
 
-### Do I keep my accounts and data?
+### How is pricing structured, and what does the retainer cover?
 
-Always. Your Klaviyo and Shopify accounts stay yours, and everything Presage builds belongs to you.
+One flat monthly retainer, set by the size and scope of your program and agreed before any work starts. It covers strategy, flows, campaigns, design, and reporting, and the program is measured on revenue, not sends or hours.
 
-### How fast will I see results?
+### How soon should we expect to see a lift in email revenue?
 
-Rebuilt welcome, cart, and post-purchase flows can move revenue within weeks. The deeper lifetime-value effect builds over the following quarters.
+Rebuilt welcome, cart, and post-purchase flows can move revenue within weeks. The deeper lifetime-value effect, from repeat purchase rate and cohort value, builds over the following quarters.
 
-### Do you lock me into a long contract?
+### What if it is not working? Are we locked into a long contract?
 
-No. The first ninety days let the flows and initial narrative arc prove out. The engagement then continues month to month.
+No long lock-in. The first ninety days give the flows and the initial narrative arc time to prove out. After that the engagement runs month to month, and either side can end it with thirty days' written notice.
+
+### Who will actually be working on our account day to day?
+
+The founder. Every program is built and run by the founder and never handed to a junior. The client roster is capped so the work stays deep.
+
+### Do we keep ownership of our Klaviyo account, customer data, and everything you build?
+
+Always. Your Klaviyo and Shopify accounts stay yours, Presage works under named, least-privilege access and a signed data processing agreement, and every flow, template, segment, and piece of copy we build belongs to you.
 
 ## Ready to see where your email revenue is leaking?
 

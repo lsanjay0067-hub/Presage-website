@@ -3,9 +3,13 @@ const CALENDLY_URL = "https://calendly.com/sanjay-presageretention/30min?hide_ev
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-document.querySelectorAll(".js-cta").forEach((link) => {
-  link.setAttribute("href", CTA_URL);
-});
+// On the homepage CTAs open the booking modal; elsewhere (legal pages) they
+// keep their own href back to the homepage's booking section.
+if (document.querySelector(CTA_URL)) {
+  document.querySelectorAll(".js-cta").forEach((link) => {
+    link.setAttribute("href", CTA_URL);
+  });
+}
 
 document.querySelectorAll("[data-year]").forEach((year) => {
   year.textContent = new Date().getFullYear();
@@ -142,6 +146,55 @@ const bookingModal = document.querySelector("[data-booking-modal]");
 const calendlyParent = bookingModal?.querySelector("[data-calendly-parent]");
 let calendlyMounted = false;
 
+// ---------- Calendly: loaded on demand, not on every page view ----------
+// The widget script and stylesheet are fetched the first time someone shows
+// intent (hovers or focuses a CTA) or scrolls near the booking section.
+let calendlyLoading = null;
+function loadCalendly() {
+  if (window.Calendly) return Promise.resolve();
+  if (calendlyLoading) return calendlyLoading;
+  const css = document.createElement("link");
+  css.rel = "stylesheet";
+  css.href = "https://assets.calendly.com/assets/external/widget.css";
+  document.head.append(css);
+  calendlyLoading = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      calendlyLoading = null;
+      reject(new Error("Calendly failed to load"));
+    };
+    document.head.append(script);
+  });
+  return calendlyLoading;
+}
+
+const inlineCalendly = document.querySelector(".calendly-inline-widget");
+function mountInlineCalendly() {
+  loadCalendly()
+    .then(() => {
+      // widget.js scans for inline widgets itself when it runs; only mount if it did not.
+      if (inlineCalendly && !inlineCalendly.querySelector("iframe")) {
+        window.Calendly.initInlineWidget({ url: CALENDLY_URL, parentElement: inlineCalendly });
+      }
+    })
+    .catch(() => {});
+}
+
+if (inlineCalendly) {
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries, observer) => {
+      if (!entries[0].isIntersecting) return;
+      observer.disconnect();
+      mountInlineCalendly();
+    }, { rootMargin: "800px 0px" }).observe(inlineCalendly);
+  } else {
+    mountInlineCalendly();
+  }
+}
+
 let bookingClosing = false;
 
 function openBooking() {
@@ -179,8 +232,32 @@ function closeBooking() {
 }
 
 document.querySelectorAll(".js-cta").forEach((trigger) => {
+  if (!bookingModal) return;
+  const warm = () => loadCalendly().catch(() => {});
+  trigger.addEventListener("pointerenter", warm, { once: true });
+  trigger.addEventListener("focus", warm, { once: true });
+  trigger.addEventListener("touchstart", warm, { once: true, passive: true });
   trigger.addEventListener("click", (event) => {
-    if (openBooking()) event.preventDefault();
+    if (openBooking()) {
+      event.preventDefault();
+      return;
+    }
+    // Widget not ready yet: hold the click briefly for it, else fall through to #booking.
+    event.preventDefault();
+    let done = false;
+    const fallback = () => {
+      if (done) return;
+      done = true;
+      document.querySelector("#booking")?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+    };
+    setTimeout(fallback, 2500);
+    loadCalendly()
+      .then(() => {
+        if (done) return;
+        done = true;
+        if (!openBooking()) document.querySelector("#booking")?.scrollIntoView();
+      })
+      .catch(fallback);
   });
 });
 
