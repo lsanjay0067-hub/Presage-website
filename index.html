@@ -54,7 +54,7 @@
 
   <header class="site-header" data-header>
     <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
-      <img src="./Assets/favicon.png" alt="" width="64" height="64">
+      <span class="nav-toggle-lines" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
     <nav class="nav-shell" id="primary-nav" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Presage home">
@@ -125,37 +125,14 @@
         </div>
       </div>
       <img class="hero-overlay" src="./Assets/hero-overlay.webp" alt="" aria-hidden="true" decoding="async">
-      <svg class="hero-bolts" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-        <g class="hero-bolt" style="--b:0">
-          <path d="M180 -20 L203 18 L208 60 L223 110 L265 147 L307 182 L338 210 L365 272 L398 306 L410 376 L422 428 L412 467" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M265 147 L263 180 L251 230 L246 276 L222 308 L206 335" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M410 376 L446 400 L491 424 L541 446 L576 456 L627 459" pathLength="1"/>
-        </g>
-        <g class="hero-bolt" style="--b:1">
-          <path d="M1260 -30 L1269 21 L1252 71 L1236 131 L1246 188 L1250 241 L1208 278 L1175 305 L1148 368 L1114 408 L1105 466 L1078 499 L1086 549" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1236 131 L1175 148 L1132 150 L1087 179 L1062 220 L1036 248" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1252 71 L1283 101 L1291 146 L1290 195 L1325 224 L1351 253" pathLength="1"/>
-        </g>
-        <g class="hero-bolt" style="--b:2">
-          <path d="M720 -40 L732 18 L723 92 L717 146 L736 185 L768 239 L813 292 L838 336 L868 386 L868 438" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M717 146 L754 171 L769 209 L794 231 L826 249 L851 264" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M813 292 L836 307 L856 327 L884 351 L898 387 L928 391" pathLength="1"/>
-        </g>
-        <g class="hero-bolt" style="--b:3">
-          <path d="M60 420 L119 432 L156 479 L197 492 L265 516 L312 532 L377 527 L421 560 L468 591 L539 590 L601 602" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M156 479 L149 526 L155 559 L172 585 L176 625 L179 660" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M377 527 L421 513 L452 508 L479 483 L511 480 L551 460" pathLength="1"/>
-        </g>
-        <g class="hero-bolt" style="--b:4">
-          <path d="M1420 520 L1355 500 L1310 515 L1259 524 L1193 519 L1127 553 L1097 584 L1047 601 L976 624 L936 630" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1047 601 L1025 619 L1011 657 L1006 702 L991 738 L992 784" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1193 519 L1156 500 L1127 500 L1115 477 L1086 456 L1056 431" pathLength="1"/>
-        </g>
-        <g class="hero-bolt" style="--b:5">
-          <path d="M980 880 L1002 825 L1036 792 L1050 751 L1090 696 L1076 629 L1064 552 L1057 479 L1042 432" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1064 552 L1087 529 L1111 495 L1137 475 L1175 459 L1210 435" pathLength="1"/>
-          <path class="hero-bolt-branch" d="M1050 751 L1034 721 L1005 706 L986 692 L982 665 L961 633" pathLength="1"/>
-        </g>
+      <svg class="hero-streaks" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <path class="hero-streak" style="--s:0" d="M-120 760 C104 485 508 286 830 166" pathLength="1"/>
+        <path class="hero-streak" style="--s:1" d="M80 980 C359 683 826 440 1193 285" pathLength="1"/>
+        <path class="hero-streak" style="--s:2" d="M420 1000 C694 749 1120 515 1451 356" pathLength="1"/>
+        <path class="hero-streak" style="--s:3" d="M760 1020 C985 746 1389 547 1710 426" pathLength="1"/>
+        <path class="hero-streak" style="--s:4" d="M-200 520 C-30 285 297 132 560 45" pathLength="1"/>
+        <path class="hero-streak" style="--s:5" d="M980 980 C1179 736 1537 560 1821 454" pathLength="1"/>
+        <path class="hero-streak" style="--s:6" d="M260 880 C397 628 709 499 966 439" pathLength="1"/>
       </svg>
       <div class="hero-atmos" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -370,7 +347,7 @@
         <div class="section-heading reveal-group">
           <h2 id="faq-title">Everything you need to know.</h2>
         </div>
-        <div class="faq-grid reveal" data-faq>
+        <div class="faq-grid reveal" id="faq-list" data-faq>
           <div class="faq-item">
             <button class="faq-question" type="button" aria-expanded="false">
               <span class="faq-icon" aria-hidden="true"></span>
@@ -444,6 +421,7 @@
             </div>
           </div>
         </div>
+        <button class="faq-more" type="button" aria-expanded="false" aria-controls="faq-list" data-faq-more>Show all questions</button>
       </div>
     </section>
 

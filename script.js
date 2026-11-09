@@ -142,6 +142,17 @@ document.querySelectorAll("[data-faq]").forEach((faq) => {
   });
 });
 
+// ---------- FAQ: phones show three questions until expanded ----------
+const faqMore = document.querySelector("[data-faq-more]");
+const faqList = document.querySelector("#faq-list");
+if (faqMore && faqList) {
+  faqMore.addEventListener("click", () => {
+    const expanded = faqList.classList.toggle("is-expanded");
+    faqMore.setAttribute("aria-expanded", String(expanded));
+    faqMore.textContent = expanded ? "Show fewer questions" : "Show all questions";
+  });
+}
+
 const bookingModal = document.querySelector("[data-booking-modal]");
 const calendlyParent = bookingModal?.querySelector("[data-calendly-parent]");
 let calendlyMounted = false;
