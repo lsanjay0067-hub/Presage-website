@@ -293,7 +293,7 @@ if (strip && "IntersectionObserver" in window) {
 // properties) instead of a custom property that restyles the whole hero.
 if (hero && !prefersReducedMotion) {
   const heroInner = hero.querySelector(".hero-inner");
-  const heroBackdrop = [".hero-wall", ".hero-streaks"].map((sel) => hero.querySelector(sel)).filter(Boolean);
+  const heroBackdrop = [".hero-wall"].map((sel) => hero.querySelector(sel)).filter(Boolean);
   const heroAtmos = hero.querySelector(".hero-atmos");
   let fadeQueued = false;
   let lastFade = -1;
