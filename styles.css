@@ -634,35 +634,6 @@ p {
   object-fit: cover;
 }
 
-/* Wave: each card bobs a little ahead of the one to its left, so the crest
-   travels right to left. Starts once the strip is on screen. */
-.strip {
-  padding-block: 10px 18px;
-}
-
-.strip.is-waving .strip-track img {
-  animation: strip-wave 4.2s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * -0.21s);
-}
-
-/* Entrance: each time the strip arrives from the hero, the cards rise in
-   as a wave from left to right (delays set per card in script.js from its
-   on-screen position), then carry on as the normal carousel. */
-.strip.is-armed .strip-track img {
-  opacity: 0;
-}
-
-.strip.is-entering .strip-track img {
-  transform-origin: 50% 100%;
-  animation:
-    strip-enter 1.15s var(--ease-out) var(--enter-delay, 0ms) both,
-    strip-wave 4.2s ease-in-out calc(var(--i, 0) * -0.21s) infinite;
-}
-
-.strip.is-idle .strip-track img {
-  animation-play-state: paused;
-}
-
 .strip-cta,
 .proof-cta,
 .days-cta {
@@ -1435,20 +1406,8 @@ body.has-modal {
 }
 
 @keyframes strip-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
-}
-
-@keyframes strip-enter {
-  0% { opacity: 0; transform: translate3d(-48px, 90px, 0) rotate(-3deg) scale(0.86, 1.28); }
-  45% { opacity: 1; transform: translate3d(0, -16px, 0) rotate(0.6deg) scale(1.06, 0.92); }
-  72% { transform: translate3d(0, 4px, 0) scale(0.98, 1.04); }
-  100% { opacity: 1; transform: none; }
-}
-
-@keyframes strip-wave {
-  0%, 100% { translate: 0 10px; }
-  50% { translate: 0 -10px; }
+  from { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 @keyframes light-drift {
@@ -1865,8 +1824,6 @@ body.has-modal {
 
   .hero-col-track,
   .strip-track,
-  .strip.is-waving .strip-track img,
-  .strip.is-entering .strip-track img,
   .hero-atmos::before,
   .hero-badge strong::after {
     animation: none;
