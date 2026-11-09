@@ -42,35 +42,35 @@ Klaviyo partner and Shopify partner.
 
 ## FAQ
 
-### We have an in-house marketer. What would Presage actually take off our plate?
+### What does Presage take off our plate?
 
 The whole email and SMS channel, end to end: strategy, flow architecture, campaign design and copy, segmentation, deliverability, and reporting. Your team stays focused on product and growth while retention runs as its own system.
 
-### Is my brand the right size and stage to work with you?
+### Is my brand the right fit for Presage?
 
 The best fit is an ecommerce brand doing roughly one to eight million a year, with a list of fifteen thousand or more and a repeat-purchase or subscription model. If you are close to that, the free audit call will tell us both quickly whether it makes sense.
 
-### Our Klaviyo flows are already live. Would you rebuild everything from scratch?
+### Will you rebuild our Klaviyo flows?
 
 No. The Audit reads your brand, revenue mix, deliverability, data health, and twelve core flows, then ranks every gap by its impact on repeat revenue and lifetime value. We rebuild the flows that carry the revenue floor and keep what is already working.
 
-### How is pricing structured, and what does the retainer cover?
+### How does pricing work?
 
 One flat monthly retainer, set by the size and scope of your program and agreed before any work starts. It covers strategy, flows, campaigns, design, and reporting, and the program is measured on revenue, not sends or hours.
 
-### How soon should we expect to see a lift in email revenue?
+### How soon will our email revenue lift?
 
 Rebuilt welcome, cart, and post-purchase flows can move revenue within weeks. The deeper lifetime-value effect, from repeat purchase rate and cohort value, builds over the following quarters.
 
-### What if it is not working? Are we locked into a long contract?
+### Are we locked into a long contract?
 
 No long lock-in. The first ninety days give the flows and the initial narrative arc time to prove out. After that the engagement runs month to month, and either side can end it with thirty days' written notice.
 
-### Who will actually be working on our account day to day?
+### Who actually works on our account?
 
 The founder. Every program is built and run by the founder and never handed to a junior. The client roster is capped so the work stays deep.
 
-### Do we keep ownership of our Klaviyo account, customer data, and everything you build?
+### Do we keep our accounts and data?
 
 Always. Your Klaviyo and Shopify accounts stay yours, Presage works under named, least-privilege access and a signed data processing agreement, and every flow, template, segment, and piece of copy we build belongs to you.
 

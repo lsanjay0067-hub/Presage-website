@@ -378,6 +378,46 @@ p {
   z-index: 1;
   width: min(1120px, 100%);
   padding: 0 20px;
+  opacity: calc(1 - var(--hero-fade, 0) * 1.2);
+  translate: 0 calc(var(--hero-fade, 0) * -48px);
+}
+
+.hero-wall,
+.hero-bolts {
+  opacity: calc(1 - var(--hero-fade, 0) * 0.85);
+}
+
+/* ---------- hero lightning: faint tech-blue strokes ---------- */
+
+.hero-bolts {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero-bolt path {
+  fill: none;
+  stroke: #072d6c;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(7, 45, 108, 0.9));
+  animation: bolt-strike 9s var(--ease-out) infinite;
+  animation-delay: calc(var(--b) * 1.6s);
+}
+
+.hero-bolt .hero-bolt-branch {
+  stroke-width: 1;
+  animation-delay: calc(var(--b) * 1.6s + 0.12s);
+}
+
+.hero.is-idle .hero-bolt path {
+  animation-play-state: paused;
 }
 
 .hero-badge {
@@ -485,12 +525,10 @@ p {
 }
 
 .hero-note {
-  margin: 22px 0 0;
-  color: #818181;
-  font-family: var(--font-heading);
-  font-size: 12px;
-  line-height: 1.35;
-  letter-spacing: -0.04em;
+  margin: 14px 0 0;
+  color: #9a9a9a;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .scroll-cue {
@@ -546,7 +584,7 @@ p {
 .stats-section {
   width: min(920px, calc(100% - 40px));
   margin-inline: auto;
-  padding: clamp(56px, 7vw, 88px) 0;
+  padding: clamp(40px, 5vw, 64px) 0 0;
 }
 
 .stats {
@@ -588,7 +626,7 @@ p {
 /* ---------- email strip ---------- */
 
 .strip-section {
-  padding: 0 0 clamp(56px, 7vw, 88px);
+  padding: clamp(56px, 7vw, 88px) 0;
 }
 
 .strip {
@@ -614,6 +652,21 @@ p {
   flex: 0 0 auto;
   aspect-ratio: 524 / 1120;
   object-fit: cover;
+}
+
+/* Wave: each card bobs a little ahead of the one to its left, so the crest
+   travels right to left. Starts once the strip is on screen. */
+.strip {
+  padding-block: 18px;
+}
+
+.strip.is-waving .strip-track img {
+  animation: strip-wave 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.21s);
+}
+
+.strip.is-idle .strip-track img {
+  animation-play-state: paused;
 }
 
 .strip-cta,
@@ -690,7 +743,13 @@ p {
   border-radius: 14px;
   background: var(--surface-1);
   opacity: 0.32;
-  transition: opacity 420ms ease;
+  transform: scale(0.82);
+  transform-origin: left center;
+  transition: opacity 420ms ease, transform 760ms var(--ease-out);
+}
+
+.days-step.is-grown .days-card {
+  transform: scale(1);
 }
 
 .days-card h3 {
@@ -999,7 +1058,7 @@ p {
 /* ---------- footer ---------- */
 
 .site-footer {
-  padding: 64px 0 28px;
+  padding: 64px 0 clamp(48px, 6vw, 80px);
   border-top: 1px solid var(--line-2);
   background: #000000;
 }
@@ -1362,8 +1421,23 @@ body.has-modal {
 }
 
 @keyframes strip-scroll {
-  from { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
-  to { transform: translate3d(0, 0, 0); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
+}
+
+@keyframes strip-wave {
+  0%, 100% { translate: 0 10px; }
+  50% { translate: 0 -10px; }
+}
+
+@keyframes bolt-strike {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  1% { opacity: 0.9; }
+  5% { stroke-dashoffset: 0; opacity: 0.9; }
+  6% { opacity: 0.25; }
+  7.5% { opacity: 0.9; }
+  16% { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
 @keyframes soft-pulse {
@@ -1710,6 +1784,8 @@ body.has-modal {
 
   .hero-col-track,
   .strip-track,
+  .strip.is-waving .strip-track img,
+  .hero-bolt path,
   .hero-badge strong::after,
   .scroll-cue span {
     animation: none;
@@ -1721,6 +1797,14 @@ body.has-modal {
 
   .days-card {
     opacity: 1;
+    transform: none;
+  }
+
+  .hero-inner,
+  .hero-wall,
+  .hero-bolts {
+    opacity: 1;
+    translate: none;
   }
 }
 

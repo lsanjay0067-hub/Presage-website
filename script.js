@@ -266,16 +266,53 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeBooking();
 });
 
-// ---------- horizontal email strip: pause when out of view ----------
+// ---------- horizontal email strip: wave in when seen, pause when out of view ----------
 const strip = document.querySelector("[data-strip]");
 if (strip && "IntersectionObserver" in window) {
-  new IntersectionObserver(([entry]) => strip.classList.toggle("is-idle", !entry.isIntersecting), { threshold: 0 }).observe(strip);
+  new IntersectionObserver(([entry]) => {
+    strip.classList.toggle("is-idle", !entry.isIntersecting);
+    if (entry.isIntersecting) strip.classList.add("is-waving");
+  }, { threshold: 0.15 }).observe(strip);
+} else if (strip) {
+  strip.classList.add("is-waving");
+}
+
+// ---------- hero: content fades out as it scrolls away ----------
+if (hero && !prefersReducedMotion) {
+  let fadeQueued = false;
+  const paintFade = () => {
+    fadeQueued = false;
+    const progress = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.85)));
+    hero.style.setProperty("--hero-fade", progress.toFixed(3));
+  };
+  const queueFade = () => {
+    if (fadeQueued || window.scrollY > hero.offsetHeight * 1.2) return;
+    fadeQueued = true;
+    requestAnimationFrame(paintFade);
+  };
+  window.addEventListener("scroll", queueFade, { passive: true });
+  window.addEventListener("resize", queueFade);
+  paintFade();
 }
 
 // ---------- first 60 days: circles light as the rail fills on scroll ----------
 const days = document.querySelector("[data-days]");
 if (days) {
   const steps = [...days.querySelectorAll("[data-days-step]")];
+
+  // Each card grows from small to full size the first time it scrolls in.
+  if ("IntersectionObserver" in window && !prefersReducedMotion) {
+    const growObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-grown");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.25, rootMargin: "0px 0px -8%" });
+    steps.forEach((step) => growObserver.observe(step));
+  } else {
+    steps.forEach((step) => step.classList.add("is-grown"));
+  }
   const nums = steps.map((step) => step.querySelector(".days-num"));
   const rail = days.querySelector(".days-rail");
   const fill = days.querySelector("[data-days-fill]");

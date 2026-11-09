@@ -72,3 +72,28 @@ test('every image the homepage references exists', async () => {
   assert.ok(srcs.size > 10);
   for (const src of srcs) await access(new URL(src, root));
 });
+
+test('stats sit between the email carousel and its CTA', async () => {
+  const html = await read('index.html');
+  const strip = html.indexOf('data-strip');
+  const stats = html.indexOf('class="stats-section"');
+  const cta = html.indexOf('class="strip-cta');
+  assert.ok(strip > 0 && stats > strip && cta > stats);
+});
+
+test('animations: hero bolts, carousel wave, growing day cards, all off for reduced motion', async () => {
+  const html = await read('index.html');
+  assert.match(html, /<svg class="hero-bolts"[^>]*aria-hidden="true"/);
+  assert.equal((html.match(/<img style="--i:\d+" src="Assets\/email-/g) || []).length, 20);
+  const css = await read('styles.css');
+  assert.match(css, /\.hero-bolt path \{[^}]*stroke: #072d6c;/);
+  assert.match(css, /\.strip\.is-waving \.strip-track img \{[^}]*animation: strip-wave/);
+  assert.match(css, /\.days-step\.is-grown \.days-card \{\s*transform: scale\(1\);/);
+  const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+  for (const selector of ['.strip.is-waving .strip-track img', '.hero-bolt path']) {
+    assert.ok(reduced.includes(selector), selector);
+  }
+  const js = await read('script.js');
+  assert.match(js, /--hero-fade/);
+  assert.match(js, /is-grown/);
+});
