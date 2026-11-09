@@ -81,18 +81,18 @@ test('stats sit between the email carousel and its CTA', async () => {
   assert.ok(strip > 0 && stats > strip && cta > stats);
 });
 
-test('animations: hero streaks, carousel wave, growing day cards, all off for reduced motion', async () => {
+test('animations: no hero streaks, carousel wave, growing day cards, all off for reduced motion', async () => {
   const html = await read('index.html');
-  assert.match(html, /<div class="hero-streaks" aria-hidden="true">/);
+  assert.ok(!html.includes('hero-streak'));
   assert.ok(!html.includes('scroll-cue'));
   assert.equal((html.match(/<img style="--i:\d+" src="Assets\/email-/g) || []).length, 20);
   const css = await read('styles.css');
-  assert.match(css, /\.hero-streaks span \{[^}]*Assets\/hero-streak\.webp/);
+  assert.ok(!css.includes('streak'));
   assert.ok(!css.includes('scroll-cue'));
   assert.match(css, /\.strip\.is-waving \.strip-track img \{[^}]*animation: strip-wave/);
   assert.match(css, /\.days-step\.is-grown \.days-card \{\s*transform: scale\(1\);/);
   const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
-  for (const selector of ['.strip.is-waving .strip-track img', '.hero-streaks span']) {
+  for (const selector of ['.strip.is-waving .strip-track img', '.hero-atmos::before']) {
     assert.ok(reduced.includes(selector), selector);
   }
   const js = await read('script.js');
@@ -113,4 +113,22 @@ test('phone: hamburger nav, three FAQs with a toggle, square stats', async () =>
   assert.match(phone, /\.stat \{\s*aspect-ratio: 1;/);
   const js = await read('script.js');
   assert.match(js, /data-faq-more/);
+});
+
+test('email carousel starts right below the hero with no top padding', async () => {
+  const css = await read('styles.css');
+  assert.match(css, /\.strip-section \{\s*padding: 0 0 clamp\(56px, 7vw, 88px\);/);
+  const html = await read('index.html');
+  assert.match(html, /<\/section>\n\n    <section class="strip-section"/);
+});
+
+test('email carousel plays a left-to-right wave entrance each time it scrolls in from the hero', async () => {
+  const css = await read('styles.css');
+  assert.match(css, /\.strip\.is-entering \.strip-track img \{\s*animation:\s*strip-enter/);
+  assert.match(css, /@keyframes strip-enter/);
+  const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+  assert.ok(reduced.includes('.strip.is-entering .strip-track img'));
+  const js = await read('script.js');
+  assert.match(js, /--enter-delay/);
+  assert.match(js, /is-armed/);
 });
