@@ -645,6 +645,19 @@ p {
   animation-delay: calc(var(--i, 0) * -0.21s);
 }
 
+/* Entrance: each time the strip arrives from the hero, the cards rise in
+   as a wave from left to right (delays set per card in script.js from its
+   on-screen position), then carry on as the normal carousel. */
+.strip.is-armed .strip-track img {
+  opacity: 0;
+}
+
+.strip.is-entering .strip-track img {
+  animation:
+    strip-enter 1.15s var(--ease-out) var(--enter-delay, 0ms) both,
+    strip-wave 4.2s ease-in-out calc(var(--i, 0) * -0.21s) infinite;
+}
+
 .strip.is-idle .strip-track img {
   animation-play-state: paused;
 }
@@ -1425,6 +1438,12 @@ body.has-modal {
   to { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
 }
 
+@keyframes strip-enter {
+  0% { opacity: 0; transform: translate3d(-48px, 90px, 0) rotate(-3deg) scale(0.94); }
+  55% { opacity: 1; transform: translate3d(0, -14px, 0) rotate(0.6deg) scale(1); }
+  100% { opacity: 1; transform: none; }
+}
+
 @keyframes strip-wave {
   0%, 100% { translate: 0 10px; }
   50% { translate: 0 -10px; }
@@ -1845,6 +1864,7 @@ body.has-modal {
   .hero-col-track,
   .strip-track,
   .strip.is-waving .strip-track img,
+  .strip.is-entering .strip-track img,
   .hero-atmos::before,
   .hero-badge strong::after {
     animation: none;

@@ -121,3 +121,14 @@ test('email carousel starts right below the hero with no top padding', async () 
   const html = await read('index.html');
   assert.match(html, /<\/section>\n\n    <section class="strip-section"/);
 });
+
+test('email carousel plays a left-to-right wave entrance each time it scrolls in from the hero', async () => {
+  const css = await read('styles.css');
+  assert.match(css, /\.strip\.is-entering \.strip-track img \{\s*animation:\s*strip-enter/);
+  assert.match(css, /@keyframes strip-enter/);
+  const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
+  assert.ok(reduced.includes('.strip.is-entering .strip-track img'));
+  const js = await read('script.js');
+  assert.match(js, /--enter-delay/);
+  assert.match(js, /is-armed/);
+});

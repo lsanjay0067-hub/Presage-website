@@ -277,13 +277,45 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeBooking();
 });
 
-// ---------- horizontal email strip: wave in when seen, pause when out of view ----------
+// ---------- horizontal email strip ----------
+// Pauses when off-screen. Each time it scrolls in from the hero above, the
+// cards rise in as a wave from left to right, then run as the normal
+// carousel with its gentle bob.
 const strip = document.querySelector("[data-strip]");
-if (strip && "IntersectionObserver" in window) {
+if (strip && "IntersectionObserver" in window && !prefersReducedMotion) {
+  const cards = [...strip.querySelectorAll(".strip-track img")];
+  let enterTimer = 0;
+  const playEntrance = () => {
+    const width = window.innerWidth;
+    let last = 0;
+    cards.forEach((card) => {
+      const left = card.getBoundingClientRect().left;
+      // On-screen cards stagger by position; off-screen ones need no delay.
+      const delay = left > -card.offsetWidth && left < width ? Math.max(0, (left / width) * 700) : 0;
+      card.style.setProperty("--enter-delay", `${Math.round(delay)}ms`);
+      last = Math.max(last, delay);
+    });
+    strip.classList.remove("is-armed", "is-waving");
+    strip.classList.add("is-entering");
+    clearTimeout(enterTimer);
+    enterTimer = setTimeout(() => {
+      strip.classList.remove("is-entering");
+      strip.classList.add("is-waving");
+    }, last + 1200);
+  };
+  strip.classList.add("is-armed");
   new IntersectionObserver(([entry]) => {
     strip.classList.toggle("is-idle", !entry.isIntersecting);
-    if (entry.isIntersecting) strip.classList.add("is-waving");
-  }, { threshold: 0.15 }).observe(strip);
+    if (entry.isIntersecting) {
+      if (strip.classList.contains("is-armed")) playEntrance();
+    } else if (entry.boundingClientRect.top > 0) {
+      // Strip is below the viewport again (user went back up to the hero):
+      // re-arm so the entrance replays on the next scroll down.
+      clearTimeout(enterTimer);
+      strip.classList.remove("is-entering", "is-waving");
+      strip.classList.add("is-armed");
+    }
+  }, { threshold: 0.12 }).observe(strip);
 } else if (strip) {
   strip.classList.add("is-waving");
 }
