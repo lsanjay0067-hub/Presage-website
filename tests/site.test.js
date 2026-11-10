@@ -92,7 +92,7 @@ test('animations: no hero streaks, plain carousel, growing day cards, reduced mo
   assert.ok(!/strip-wave|strip-enter|is-armed|is-waving/.test(css));
   assert.match(css, /\.days-step\.is-grown \.days-card \{\s*transform: scale\(1\);/);
   const reduced = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'));
-  for (const selector of ['.strip-track', '.hero-atmos::before']) {
+  for (const selector of ['.strip-track', '.days-card']) {
     assert.ok(reduced.includes(selector), selector);
   }
   const js = await read('script.js');
@@ -120,4 +120,25 @@ test('email carousel starts right below the hero with no top padding', async () 
   assert.match(css, /\.strip-section \{\s*padding: 0 0 clamp\(56px, 7vw, 88px\);/);
   const html = await read('index.html');
   assert.match(html, /<\/section>\n\n    <section class="strip-section"/);
+});
+
+test('memory budget: trimmed wall and carousel, shared card size, no extra hero layers', async () => {
+  const html = await read('index.html');
+  const wall = html.match(/<canvas class="hero-wall" aria-hidden="true" data-wall data-srcs="([^"]+)" data-atmos="Assets\/hero-atmos\.webp"><\/canvas>/);
+  assert.ok(wall, 'hero wall is a canvas');
+  const srcs = wall[1].split(' ');
+  assert.equal(srcs.length, 5);
+  for (const src of srcs) await access(new URL(src, root));
+  assert.ok(!html.includes('hero-col') && !html.includes('hero-overlay') && !html.includes('hero-atmos"'));
+  const strip = html.match(/<div class="strip-track">([\s\S]*?)<\/div>/)[1];
+  assert.equal((strip.match(/<img /g) || []).length, 15);
+  const css = await read('styles.css');
+  assert.match(css, /--strip-w: var\(--wall-w\);/);
+  assert.equal((css.match(/--strip-w:/g) || []).length, 1);
+  assert.match(css, /@keyframes strip-scroll \{[^}]*calc\(-10 \* \(var\(--strip-w\) \+ var\(--strip-gap\)\)\)/);
+  assert.ok(!css.includes('light-drift'));
+  assert.ok(!css.includes('hero-col') && !css.includes('wall-scroll'));
+  const js = await read('script.js');
+  assert.match(js, /data-wall/);
+  assert.match(js, /prefersReducedMotion && !heroIdle/);
 });

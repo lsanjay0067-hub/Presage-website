@@ -44,10 +44,149 @@ if (header && hero) {
   headerObserver.observe(hero);
 }
 
-// Pause the hero wall whenever it is off-screen or the tab is hidden so the
-// compositor is not animating five layers nobody can see.
+// ---------- hero backdrop ----------
+// The email wall, light leak, vignette, bottom fade and grain are painted on
+// one <canvas> rather than as a dozen full-density composited layers. The
+// backing store is capped at the stitched images' own resolution, so it costs
+// a few MB regardless of screen density. It only paints while the hero is on
+// screen, the tab is visible and no modal is open.
+const wall = document.querySelector("[data-wall]");
+let heroIdle = false;
+let wallKick = () => {};
+
+if (wall && wall.getContext) {
+  const ctx = wall.getContext("2d", { alpha: true });
+  const SRC_W = 340; // stitched column image width in px
+  const ALPHA = 0.28;
+  const MAX_PIXELS = 2e6;
+  const images = wall.dataset.srcs.split(" ").map((src, i) => {
+    const img = new Image();
+    img.decoding = "async";
+    if (i < 2) img.fetchPriority = "high";
+    img.onload = () => { img.ready = true; wallKick(true); };
+    img.src = src;
+    return img;
+  });
+  const atmos = new Image();
+  atmos.decoding = "async";
+  atmos.onload = () => { atmos.ready = true; wallKick(true); };
+  atmos.src = wall.dataset.atmos;
+
+  // Fine static grain: a small tile of white specks with random alpha.
+  const grainTile = document.createElement("canvas");
+  grainTile.width = grainTile.height = 128;
+  const grainCtx = grainTile.getContext("2d");
+  const grainData = grainCtx.createImageData(128, 128);
+  for (let i = 0; i < grainData.data.length; i += 4) {
+    grainData.data[i] = grainData.data[i + 1] = grainData.data[i + 2] = 255;
+    grainData.data[i + 3] = Math.random() * 140;
+  }
+  grainCtx.putImageData(grainData, 0, 0);
+  const grain = ctx.createPattern(grainTile, "repeat");
+
+  let cols = 5, gap = 18, colW = 0, scale = 1, loopSeconds = 46;
+  let elapsed = 0, last = 0, raf = 0, released = false;
+
+  const measure = () => {
+    const root = getComputedStyle(document.documentElement);
+    cols = parseInt(root.getPropertyValue("--wall-cols"), 10) || 5;
+    gap = parseFloat(root.getPropertyValue("--wall-gap")) || 18;
+    loopSeconds = parseFloat(root.getPropertyValue("--wall-speed")) || 46;
+    const width = wall.clientWidth;
+    const height = wall.clientHeight;
+    colW = (width - (cols - 1) * gap) / cols;
+    // Never store more pixels than the source images hold or the screen shows,
+    // and never more than about two million in total, so a very large monitor
+    // costs the same as a laptop.
+    scale = Math.min(window.devicePixelRatio || 1, Math.max(1, SRC_W / colW), 1.5);
+    scale = Math.min(scale, Math.sqrt(MAX_PIXELS / Math.max(1, width * height)));
+    const w = Math.round(width * scale);
+    const h = Math.round(height * scale);
+    if (wall.width !== w || wall.height !== h) {
+      wall.width = w;
+      wall.height = h;
+    }
+  };
+
+  const paint = () => {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.clearRect(0, 0, wall.clientWidth, wall.clientHeight);
+    ctx.globalAlpha = ALPHA;
+    const height = wall.clientHeight;
+    const progress = (elapsed / loopSeconds) % 1;
+    for (let i = 0; i < cols; i += 1) {
+      const img = images[i];
+      if (!img || !img.ready) continue;
+      const loopH = (img.naturalHeight / img.naturalWidth) * colW;
+      // Even columns drift down, odd columns drift up.
+      const shift = (i % 2 === 0 ? 1 - progress : progress) * loopH;
+      const x = i * (colW + gap);
+      for (let y = -shift; y < height; y += loopH) ctx.drawImage(img, x, y, colW, loopH);
+    }
+    const width = wall.clientWidth;
+    ctx.globalAlpha = 1;
+    // Light leak, vignette and the fade into the page colour, stretched to
+    // the hero exactly as the percentage-based CSS gradients were.
+    if (atmos.ready) ctx.drawImage(atmos, 0, 0, width, height);
+    // Grain at one speck per backing pixel.
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 0.07;
+    ctx.fillStyle = grain;
+    ctx.fillRect(0, 0, wall.width, wall.height);
+  };
+
+  const running = () => !prefersReducedMotion && !heroIdle && !document.hidden && !document.body.classList.contains("has-modal");
+  const frame = (now) => {
+    raf = 0;
+    if (!running()) { last = 0; return; }
+    if (last) elapsed += Math.min(0.1, (now - last) / 1000);
+    last = now;
+    paint();
+    raf = requestAnimationFrame(frame);
+  };
+  wallKick = (repaint) => {
+    if (released) return;
+    if (repaint && !raf) paint();
+    if (!raf && running()) raf = requestAnimationFrame(frame);
+  };
+
+  // Far from the hero the canvas gives its pixels back entirely; it is
+  // re-created and painted again before the hero scrolls back into view.
+  if (hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting === !released) return;
+      released = !entry.isIntersecting;
+      if (released) {
+        wall.width = wall.height = 1;
+      } else {
+        measure();
+        wallKick(true);
+      }
+    }, { rootMargin: "700px 0px" }).observe(hero);
+  }
+
+  let resizeQueued = false;
+  window.addEventListener("resize", () => {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(() => {
+      resizeQueued = false;
+      if (released) return;
+      measure();
+      wallKick(true);
+    });
+  });
+  measure();
+  wallKick(true);
+}
+
+// Stop painting the wall whenever the hero is off-screen or the tab is hidden.
 if (hero) {
-  const setIdle = (idle) => hero.classList.toggle("is-idle", idle);
+  const setIdle = (idle) => {
+    heroIdle = idle;
+    hero.classList.toggle("is-idle", idle);
+    wallKick();
+  };
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(([entry]) => setIdle(!entry.isIntersecting), { threshold: 0 }).observe(hero);
   }
@@ -236,6 +375,7 @@ function closeBooking() {
     bookingModal.classList.remove("is-closing");
     bookingModal.hidden = true;
     document.body.classList.remove("has-modal");
+    wallKick();
     bookingClosing = false;
   };
   dialog?.addEventListener("animationend", finish);
@@ -284,12 +424,11 @@ if (strip && "IntersectionObserver" in window) {
 }
 
 // ---------- hero: content fades out as it scrolls away ----------
-// Writes opacity/transform straight onto the four layers (compositor-only
+// Writes opacity/transform straight onto the two layers (compositor-only
 // properties) instead of a custom property that restyles the whole hero.
 if (hero && !prefersReducedMotion) {
   const heroInner = hero.querySelector(".hero-inner");
-  const heroBackdrop = [".hero-wall"].map((sel) => hero.querySelector(sel)).filter(Boolean);
-  const heroAtmos = hero.querySelector(".hero-atmos");
+  const heroBackdrop = hero.querySelector(".hero-wall");
   let fadeQueued = false;
   let lastFade = -1;
   const paintFade = () => {
@@ -301,8 +440,7 @@ if (hero && !prefersReducedMotion) {
       heroInner.style.opacity = String(Math.max(0, 1 - fade * 1.2));
       heroInner.style.transform = `translate3d(0, ${(-48 * fade).toFixed(1)}px, 0)`;
     }
-    heroBackdrop.forEach((el) => { el.style.opacity = String(1 - fade * 0.85); });
-    if (heroAtmos) heroAtmos.style.opacity = String(1 - fade * 0.6);
+    if (heroBackdrop) heroBackdrop.style.opacity = String(1 - fade * 0.85);
   };
   const queueFade = () => {
     if (fadeQueued || (lastFade === 1 && window.scrollY > hero.offsetHeight)) return;

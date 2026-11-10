@@ -16,12 +16,12 @@
   --nav-top: 26px;
   --nav-h: 48px;
   --wall-gap: 18px;
-  --wall-w: calc((100vw - 4 * var(--wall-gap)) / 5);
-  --wall-h: calc(var(--wall-w) * 2.1374);
-  --wall-loop: calc(2 * (var(--wall-h) + var(--wall-gap)));
-  --wall-speed: 46s;
+  --wall-cols: 5;
+  --wall-w: calc((100vw - (var(--wall-cols) - 1) * var(--wall-gap)) / var(--wall-cols));
+  --wall-speed: 46;
   --strip-gap: 18px;
-  --strip-w: calc((100vw - 6 * var(--strip-gap)) / 5);
+  /* Same card size as the hero wall, so the browser decodes each email once. */
+  --strip-w: var(--wall-w);
   --base-deep: #0a0a0a;
   --line-1: #2b2b2b;
   --line-2: #232323;
@@ -325,51 +325,17 @@ p {
   text-align: center;
 }
 
+/* The hero backdrop is one <canvas> painted by script.js: the moving email
+   wall, then the light leak and vignette (Assets/hero-atmos.webp), the fade
+   into the page colour and a fine grain. A canvas has a fixed, small backing
+   store; the DOM version of the same picture needed about a dozen
+   full-density layers (well over 100MB on Retina screens). */
 .hero-wall {
   position: absolute;
   inset: 0;
-  display: flex;
-  justify-content: center;
-  gap: var(--wall-gap);
-  pointer-events: none;
-}
-
-.hero-col {
-  flex: 0 0 var(--wall-w);
-  overflow: hidden;
-}
-
-.hero-col-track {
-  display: flex;
-  flex-direction: column;
-  gap: var(--wall-gap);
-  animation: wall-scroll var(--wall-speed) linear infinite;
-  will-change: transform;
-}
-
-.hero-col--down .hero-col-track {
-  animation-direction: reverse;
-}
-
-.hero.is-idle .hero-col-track {
-  animation-play-state: paused;
-}
-
-.hero-col-track img {
   display: block;
-  width: var(--wall-w);
-  height: var(--wall-h);
-  flex: 0 0 auto;
-  object-fit: cover;
-  opacity: 0.28;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   pointer-events: none;
 }
 
@@ -378,51 +344,6 @@ p {
   z-index: 1;
   width: min(1120px, 100%);
   padding: 0 20px;
-}
-
-.hero.is-idle .hero-atmos::before {
-  animation-play-state: paused;
-}
-
-/* ---------- hero atmosphere: light sweep, dark vignette, fine grain ---------- */
-
-.hero-atmos {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(60% 55% at 12% 18%, rgba(3, 6, 10, 0.55), transparent 70%),
-    radial-gradient(120% 90% at 50% 42%, transparent 45%, rgba(4, 7, 11, 0.7) 100%),
-    linear-gradient(180deg, transparent 72%, var(--bg) 100%);
-  pointer-events: none;
-}
-
-/* Soft diagonal light leak from the top right, drifting slowly. */
-.hero-atmos::before {
-  position: absolute;
-  inset: -10%;
-  background:
-    radial-gradient(40% 48% at 84% 10%, rgba(226, 236, 255, 0.44), rgba(140, 172, 228, 0.16) 45%, transparent 72%),
-    linear-gradient(
-      124deg,
-      transparent 58%,
-      rgba(7, 45, 108, 0.24) 64%,
-      rgba(160, 188, 236, 0.14) 70%,
-      rgba(226, 236, 255, 0.16) 76%,
-      transparent 90%
-    );
-  content: "";
-  will-change: transform, opacity;
-  animation: light-drift 16s ease-in-out infinite alternate;
-}
-
-/* Static film grain, kept faint. */
-.hero-atmos::after {
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.07;
-  content: "";
 }
 
 .hero-badge {
@@ -621,8 +542,12 @@ p {
   will-change: transform;
 }
 
+/* Off-screen the track is not animated at all, so the browser does not keep
+   a pre-drawn layer of all fifteen cards. The loop's start and end frames are
+   identical, so restarting it as it scrolls into view is seamless. */
 .strip.is-idle .strip-track {
-  animation-play-state: paused;
+  animation: none;
+  will-change: auto;
 }
 
 .strip-track img {
@@ -1259,7 +1184,6 @@ p {
   animation: modal-in 200ms ease reverse both;
 }
 
-body.has-modal .hero-col-track,
 body.has-modal .strip-track {
   animation-play-state: paused;
 }
@@ -1400,19 +1324,10 @@ body.has-modal {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes wall-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, calc(-1 * var(--wall-loop)), 0); }
-}
-
 @keyframes strip-scroll {
-  from { transform: translate3d(calc(-50% - var(--strip-gap) / 2), 0, 0); }
+  /* One loop is the ten unique cards; the track carries five more to cover the seam. */
+  from { transform: translate3d(calc(-10 * (var(--strip-w) + var(--strip-gap))), 0, 0); }
   to { transform: translate3d(0, 0, 0); }
-}
-
-@keyframes light-drift {
-  from { transform: translate3d(3%, -3%, 0); opacity: 0.75; }
-  to { transform: translate3d(-2%, 2%, 0); opacity: 1; }
 }
 
 @keyframes soft-pulse {
@@ -1432,11 +1347,7 @@ body.has-modal {
 
 @media (max-width: 900px) {
   :root {
-    --wall-w: calc((100vw - 3 * var(--wall-gap)) / 4);
-  }
-
-  .hero-col:nth-child(5) {
-    display: none;
+    --wall-cols: 4;
   }
 
   .booking-modal-dialog {
@@ -1479,12 +1390,7 @@ body.has-modal {
 @media (max-width: 780px) {
   :root {
     --nav-top: 12px;
-    --wall-w: calc((100vw - 2 * var(--wall-gap)) / 3);
-    --strip-w: calc((100vw - 4 * var(--strip-gap)) / 3);
-  }
-
-  .hero-col:nth-child(4) {
-    display: none;
+    --wall-cols: 3;
   }
 
   /* Phone nav: a full-width pill with the wordmark on the left and a
@@ -1682,17 +1588,12 @@ body.has-modal {
     --wide: min(100% - 28px, 1120px);
     --section-space: 56px;
     --wall-gap: 12px;
-    --wall-w: calc((100vw - var(--wall-gap)) / 2);
+    --wall-cols: 2;
     --strip-gap: 12px;
-    --strip-w: calc((100vw - 3 * var(--strip-gap)) / 2);
   }
 
   html {
     scroll-padding-top: 128px;
-  }
-
-  .hero-col:nth-child(3) {
-    display: none;
   }
 
   .partner-badge {
@@ -1822,9 +1723,7 @@ body.has-modal {
     transform: none;
   }
 
-  .hero-col-track,
   .strip-track,
-  .hero-atmos::before,
   .hero-badge strong::after {
     animation: none;
   }
