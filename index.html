@@ -28,7 +28,7 @@
   <title>Presage Retention | Email &amp; SMS retention studio for ecommerce brands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="./Assets/hero-overlay.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./Assets/wall-1.webp" type="image/webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Average+Sans&family=Azeret+Mono:wght@400;500;600&family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
@@ -75,60 +75,7 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero-wall" aria-hidden="true">
-        <div class="hero-col hero-col--down">
-          <div class="hero-col-track">
-            <img src="Assets/email-01.webp" alt="" width="524" height="1120" decoding="async" fetchpriority="high">
-            <img src="Assets/email-02.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-01.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-02.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-01.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-02.webp" alt="" width="524" height="1120" decoding="async">
-          </div>
-        </div>
-        <div class="hero-col">
-          <div class="hero-col-track">
-            <img src="Assets/email-03.webp" alt="" width="524" height="1120" decoding="async" fetchpriority="high">
-            <img src="Assets/email-04.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-03.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-04.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-03.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-04.webp" alt="" width="524" height="1120" decoding="async">
-          </div>
-        </div>
-        <div class="hero-col hero-col--down">
-          <div class="hero-col-track">
-            <img src="Assets/email-05.webp" alt="" width="524" height="1120" decoding="async" fetchpriority="high">
-            <img src="Assets/email-06.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-05.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-06.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-05.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-06.webp" alt="" width="524" height="1120" decoding="async">
-          </div>
-        </div>
-        <div class="hero-col">
-          <div class="hero-col-track">
-            <img src="Assets/email-07.webp" alt="" width="524" height="1120" decoding="async" fetchpriority="high">
-            <img src="Assets/email-08.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-07.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-08.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-07.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-08.webp" alt="" width="524" height="1120" decoding="async">
-          </div>
-        </div>
-        <div class="hero-col hero-col--down">
-          <div class="hero-col-track">
-            <img src="Assets/email-09.webp" alt="" width="524" height="1120" decoding="async" fetchpriority="high">
-            <img src="Assets/email-10.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-09.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-10.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-09.webp" alt="" width="524" height="1120" decoding="async">
-            <img src="Assets/email-10.webp" alt="" width="524" height="1120" decoding="async">
-          </div>
-        </div>
-      </div>
-      <img class="hero-overlay" src="./Assets/hero-overlay.webp" alt="" aria-hidden="true" decoding="async">
-      <div class="hero-atmos" aria-hidden="true"></div>
+      <canvas class="hero-wall" aria-hidden="true" data-wall data-srcs="Assets/wall-1.webp Assets/wall-2.webp Assets/wall-3.webp Assets/wall-4.webp Assets/wall-5.webp" data-atmos="Assets/hero-atmos.webp"></canvas>
       <div class="hero-inner">
         <p class="hero-badge hero-rise"><span>Now taking two new brands for 4th quarter.</span><strong>One spot left</strong></p>
         <h1 class="hero-title hero-rise" id="hero-title"><span>Product into rituals</span><span>with emails as brand channel</span></h1>
@@ -144,7 +91,7 @@
     </section>
 
     <section class="strip-section" aria-label="Email designs by Presage">
-      <div class="strip" data-strip>
+      <div class="strip is-idle" data-strip>
         <div class="strip-track">
             <img src="Assets/email-01.webp" alt="Retention email design by Presage, example 1" width="524" height="1120" loading="lazy" decoding="async">
             <img src="Assets/email-02.webp" alt="Retention email design by Presage, example 2" width="524" height="1120" loading="lazy" decoding="async">
@@ -161,11 +108,6 @@
             <img src="Assets/email-03.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
             <img src="Assets/email-04.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
             <img src="Assets/email-05.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
-            <img src="Assets/email-06.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
-            <img src="Assets/email-07.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
-            <img src="Assets/email-08.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
-            <img src="Assets/email-09.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
-            <img src="Assets/email-10.webp" alt="" width="524" height="1120" loading="lazy" decoding="async" aria-hidden="true">
         </div>
       </div>
       <div class="stats-section" role="group" aria-label="Presage results at a glance">
