@@ -1,3 +1,31 @@
+/* Self-hosted latin fonts: no third-party connections before first paint. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("Assets/fonts/inter.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Average Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("Assets/fonts/average-sans.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Azeret Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("Assets/fonts/azeret-mono.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   /* Klaviyo partner badge: 0 hides it, 1 shows it again. */
   --klaviyo-badge-opacity: 1;
@@ -156,6 +184,7 @@ p {
 /* Below-the-fold sections skip layout and paint until they approach the viewport. */
 .offer-section,
 .process-section,
+.calc-section,
 .proof-section,
 .faq-section,
 .booking-section,
@@ -321,6 +350,8 @@ p {
   min-height: 100dvh;
   place-items: center;
   overflow: hidden;
+  /* Room for the client logo strip along the bottom edge. */
+  padding-bottom: clamp(88px, 12vh, 120px);
   background: var(--bg);
   text-align: center;
 }
@@ -663,6 +694,332 @@ p {
 
 .days-step.is-lit .days-card {
   opacity: 1;
+}
+
+/* ---------- hero client logos ---------- */
+
+.hero-logos {
+  position: absolute;
+  right: 0;
+  bottom: clamp(24px, 4vh, 40px);
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0.28;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  pointer-events: none;
+}
+
+.hero-logos-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* script.js clones the set until it covers the screen, then loops one set width. */
+.hero-logos.is-moving .hero-logos-track {
+  justify-content: flex-start;
+  width: max-content;
+  animation: logos-scroll var(--logos-time, 30s) linear infinite;
+}
+
+.hero.is-idle .hero-logos-track {
+  animation-play-state: paused;
+}
+
+.hero-logos img {
+  --logo-h: 26px;
+  --logo-gap: clamp(48px, 7vw, 96px);
+  width: auto;
+  height: calc(var(--logo-h) * var(--h, 1));
+  margin-inline: calc(var(--logo-gap) / 2);
+}
+
+@keyframes logos-scroll {
+  to { transform: translate3d(calc(-1 * var(--logos-set)), 0, 0); }
+}
+
+/* ---------- customer journey architecture ---------- */
+
+.journey {
+  position: relative;
+  width: min(920px, calc(100% - 24px));
+  margin: 0 auto;
+}
+
+.journey-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.journey-lines path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.journey-lines .is-fill {
+  stroke: var(--pill);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px rgba(189, 247, 184, 0.6));
+}
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(40px, 6vw, 64px) 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journey-node {
+  position: relative;
+  z-index: 1;
+  grid-column: var(--c);
+  grid-row: var(--r);
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  padding: 12px 22px 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: var(--surface-1);
+  opacity: 0.32;
+  transition: opacity 420ms ease, border-color 320ms ease, box-shadow 320ms ease;
+}
+
+.journey-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transition: background 320ms ease, border-color 320ms ease, box-shadow 320ms ease;
+}
+
+.journey-node small {
+  display: block;
+  color: var(--grey-3);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.journey-node b {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.journey-hub {
+  padding: 16px 28px 16px 22px;
+}
+
+.journey-hub b {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.journey-node.is-lit {
+  border-color: rgba(189, 247, 184, 0.35);
+  opacity: 1;
+}
+
+.journey-node.is-lit .journey-dot {
+  border-color: var(--pill);
+  background: var(--pill);
+  box-shadow: 0 0 0 4px rgba(189, 247, 184, 0.14), 0 0 14px rgba(189, 247, 184, 0.55);
+}
+
+.journey-hub.is-lit {
+  box-shadow: 0 0 28px rgba(189, 247, 184, 0.16);
+}
+
+/* ---------- retention calculator ---------- */
+
+.calc {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: var(--wide);
+  margin: 0 auto;
+}
+
+.calc-card {
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  background: var(--surface-1);
+}
+
+.calc-card h3 {
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.calc-field {
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.calc-field label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #b3b3b3;
+  font-size: 14px;
+}
+
+.calc-field output {
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.calc-field input {
+  width: 100%;
+  height: 6px;
+  margin: 0;
+  border-radius: 6px;
+  background: linear-gradient(var(--pill), var(--pill)) 0 / var(--p, 50%) 100% no-repeat, var(--line-1);
+  cursor: pointer;
+  appearance: none;
+}
+
+.calc-field input::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(189, 247, 184, 0.18);
+  appearance: none;
+}
+
+.calc-field input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(189, 247, 184, 0.18);
+}
+
+.calc-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.calc-stat {
+  padding: 18px;
+  background: var(--surface-1);
+}
+
+.calc-stat small {
+  display: block;
+  color: var(--grey-3);
+  font-size: 13px;
+}
+
+.calc-stat strong {
+  display: block;
+  margin: 4px 0 2px;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.calc-stat.is-key strong {
+  color: var(--green);
+}
+
+.calc-stat span {
+  color: #7a7a7a;
+  font-size: 12px;
+}
+
+.calc-pips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.calc-pips li,
+.calc-legend i {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.calc .is-paid {
+  border-color: rgba(189, 247, 184, 0.5);
+}
+
+.calc .is-even {
+  border-color: var(--pill);
+  background: var(--pill);
+  box-shadow: 0 0 12px rgba(189, 247, 184, 0.55);
+}
+
+.calc .is-profit {
+  border-color: rgba(189, 247, 184, 0.5);
+  background: rgba(189, 247, 184, 0.28);
+}
+
+.calc .is-lost {
+  border-style: dashed;
+  opacity: 0.4;
+}
+
+.calc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0;
+  color: #7a7a7a;
+  font-size: 12px;
+}
+
+.calc-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.calc-legend i {
+  width: 10px;
+  height: 10px;
+}
+
+.calc-note {
+  margin: 18px 0 0;
+  color: #b3b3b3;
+  font-size: 14px;
 }
 
 /* ---------- offer ---------- */
@@ -1194,7 +1551,7 @@ body.has-modal .strip-track {
   padding: 34px;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55)),
-    url("Assets/hero-bg.jpg") center / cover no-repeat;
+    url("Assets/hero-bg.webp") center / cover no-repeat;
   color: #ffffff;
   text-align: left;
 }
@@ -1217,10 +1574,6 @@ body.has-modal .strip-track {
   object-fit: cover;
 }
 
-.booking-modal-avatar img.is-mark {
-  width: 24px;
-  height: auto;
-}
 
 .booking-modal-copy h2 {
   margin-bottom: 8px;
@@ -1388,6 +1741,40 @@ body.has-modal {
 }
 
 @media (max-width: 780px) {
+  .hero-logos img {
+    --logo-h: 20px;
+    --logo-gap: 44px;
+  }
+
+  .calc {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-grid {
+    column-gap: 6px;
+  }
+
+  .journey-node,
+  .journey-hub {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 10px;
+    border-radius: 22px;
+    text-align: center;
+  }
+
+  .journey-node b {
+    font-size: 12.5px;
+  }
+
+  .journey-node small {
+    font-size: 9.5px;
+  }
+
+  .journey-hub b {
+    font-size: 17px;
+  }
+
   :root {
     --nav-top: 12px;
     --wall-cols: 3;
@@ -1724,6 +2111,7 @@ body.has-modal {
   }
 
   .strip-track,
+  .hero-logos-track,
   .hero-badge strong::after {
     animation: none;
   }

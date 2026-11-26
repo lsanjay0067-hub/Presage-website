@@ -508,3 +508,147 @@ if (days) {
   window.addEventListener("resize", request);
   request();
 }
+
+// ---------- hero client logos: one set, cloned to fill the screen, looping right to left ----------
+const logos = document.querySelector("[data-logos]");
+if (logos && !prefersReducedMotion) {
+  const track = logos.firstElementChild;
+  const set = [...track.children];
+  logos.classList.add("is-moving");
+  const fit = () => {
+    const one = track.offsetWidth / (track.children.length / set.length);
+    while (track.offsetWidth < window.innerWidth + one) {
+      set.forEach((img) => {
+        const copy = img.cloneNode();
+        copy.alt = "";
+        copy.setAttribute("aria-hidden", "true");
+        track.append(copy);
+      });
+    }
+    track.style.setProperty("--logos-set", `${one}px`);
+    track.style.setProperty("--logos-time", `${one / 36}s`);
+  };
+  fit();
+  window.addEventListener("resize", fit);
+}
+
+// ---------- customer journey: rails split, merge and light on scroll, like the 60-days rail ----------
+const journey = document.querySelector("[data-journey]");
+if (journey) {
+  const svg = journey.querySelector("svg");
+  const nodes = Object.fromEntries([...journey.querySelectorAll("[data-node]")].map((n) => [n.dataset.node, n]));
+  const edges = Object.values(nodes).flatMap((from) =>
+    (from.dataset.to || "").split(" ").filter(Boolean).map((to) => ({ from, to: nodes[to] })));
+  let ticking = false;
+  let watching = false;
+
+  const paint = () => {
+    ticking = false;
+    const top = journey.getBoundingClientRect().top;
+    const line = prefersReducedMotion ? Infinity : window.innerHeight * 0.62 - top;
+    edges.forEach((e) => {
+      e.fill.style.strokeDashoffset = 1 - Math.min(1, Math.max(0, (line - e.y1) / (e.y2 - e.y1)));
+    });
+    Object.values(nodes).forEach((n) => {
+      const box = n.getBoundingClientRect();
+      n.classList.toggle("is-lit", box.top + box.height / 2 - top <= line);
+    });
+  };
+
+  // Square rails with rounded corners: a split turns just below its parent,
+  // a merge just above its child, so lines leave and arrive together.
+  const draw = () => {
+    const box = journey.getBoundingClientRect();
+    let paths = "";
+    edges.forEach((e) => {
+      const a = e.from.getBoundingClientRect();
+      const b = e.to.getBoundingClientRect();
+      const x1 = a.left + a.width / 2 - box.left;
+      const x2 = b.left + b.width / 2 - box.left;
+      e.y1 = a.bottom - box.top;
+      e.y2 = b.top - box.top;
+      const merge = edges.filter((o) => o.to === e.to).length > 1;
+      const split = e.from.dataset.to.includes(" ");
+      const my = merge ? e.y2 - 28 : split ? e.y1 + 28 : (e.y1 + e.y2) / 2;
+      const dx = Math.sign(x2 - x1);
+      const r = Math.min(20, Math.abs(x2 - x1) / 2);
+      const d = dx
+        ? `M${x1} ${e.y1}V${my - r}Q${x1} ${my} ${x1 + dx * r} ${my}H${x2 - dx * r}Q${x2} ${my} ${x2} ${my + r}V${e.y2}`
+        : `M${x1} ${e.y1}V${e.y2}`;
+      paths += `<path d="${d}"/><path class="is-fill" d="${d}" pathLength="1"/>`;
+    });
+    svg.innerHTML = paths;
+    svg.querySelectorAll(".is-fill").forEach((path, i) => { edges[i].fill = path; });
+    paint();
+  };
+
+  const request = () => {
+    if (!watching || ticking) return;
+    ticking = true;
+    requestAnimationFrame(paint);
+  };
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      watching = entry.isIntersecting;
+      if (watching) draw(); // re-measure in case anything above changed height
+    }, { rootMargin: "20% 0px 20% 0px" }).observe(journey);
+  } else {
+    watching = true;
+  }
+
+  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("resize", draw);
+  draw();
+}
+
+// ---------- retention calculator ----------
+const calc = document.querySelector("[data-calc]");
+if (calc) {
+  const inputs = [...calc.querySelectorAll("input")];
+  const pips = calc.querySelector("[data-pips]");
+  const out = Object.fromEntries([...calc.querySelectorAll("[data-out]")].map((el) => [el.dataset.out, el]));
+  const money = (n) => `${n < 0 ? "-" : ""}$${Math.round(Math.abs(n)).toLocaleString("en-US")}`;
+  const when = (order, freq) => (order <= 1 ? "On the first purchase" : `~${Math.round(((order - 1) / freq) * 12)} months after first order`);
+
+  const update = () => {
+    const v = {};
+    inputs.forEach((el) => {
+      v[el.name] = Number(el.value);
+      el.style.setProperty("--p", `${((el.value - el.min) / (el.max - el.min)) * 100}%`);
+      const o = el.previousElementSibling.querySelector("output");
+      o.textContent = o.dataset.unit === "$" ? `$${el.value}` : el.value + o.dataset.unit;
+    });
+    const perOrder = (v.aov * v.margin) / 100;
+    const even = Math.ceil(v.cac / perOrder);
+    const comp = Math.ceil((3 * v.cac) / perOrder); // 3:1 LTV:CAC, the usual healthy benchmark
+    const orders = v.freq * v.life;
+    const kept = Math.floor(orders);
+    const ratio = (orders * perOrder) / v.cac;
+    const short = Math.max(1, comp - kept);
+
+    out.even.textContent = `Order ${even}`;
+    out.evenWhen.textContent = when(even, v.freq);
+    out.comp.textContent = `Order ${comp}`;
+    out.compWhen.textContent = when(comp, v.freq);
+    out.rev.textContent = money(orders * v.aov);
+    out.orders.textContent = `${orders.toFixed(1)} orders over ${v.life} yr`;
+    out.profit.textContent = money(orders * perOrder - v.cac);
+    out.ratio.textContent = `${ratio.toFixed(1)}× LTV:CAC`;
+    out.note.textContent = ratio >= 3
+      ? `Your customers stay long enough to compound. Every order after ${comp} is the retention program paying for itself.`
+      : ratio >= 1
+        ? `You break even, but customers leave ${short} order${short > 1 ? "s" : ""} short of compounding. That gap is what retention closes.`
+        : "Customers leave before paying back what it cost to acquire them. Retention is the difference between a loss and a profit here.";
+
+    const count = Math.min(24, Math.max(comp, kept, even) + 1);
+    pips.innerHTML = Array.from({ length: count }, (_, i) => {
+      const n = i + 1;
+      const state = n > kept ? "lost" : n < even ? "paid" : n === even ? "even" : "profit";
+      return `<li class="is-${state}"></li>`;
+    }).join("");
+  };
+
+  calc.addEventListener("input", update);
+  update();
+}
