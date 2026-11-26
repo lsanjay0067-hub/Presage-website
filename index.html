@@ -88,6 +88,15 @@
           <img class="partner-badge" src="./Assets/shopify-partner.webp" alt="Shopify partner" width="310" height="80" decoding="async">
         </div>
       </div>
+      <div class="hero-logos" aria-label="Brands we have worked with" data-logos>
+        <div class="hero-logos-track">
+          <img src="Assets/logos/smiir.webp" alt="SMiiR!" width="342" height="98" decoding="async">
+          <img src="Assets/logos/ooox.webp" alt="OOOX" width="295" height="95" decoding="async">
+          <img src="Assets/logos/galartsy.webp" alt="Galartsy" width="381" height="189" decoding="async" style="--h: 1.7">
+          <img src="Assets/logos/superfoods.webp" alt="Superfoods Company" width="488" height="97" decoding="async">
+          <img src="Assets/logos/matt.webp" alt="matt" width="393" height="122" decoding="async">
+        </div>
+      </div>
     </section>
 
     <section class="strip-section" aria-label="Email designs by Presage">
@@ -178,6 +187,29 @@
       </div>
     </section>
 
+    <section class="section journey-section" id="journey" aria-labelledby="journey-title">
+      <div class="section-heading content-column reveal-group">
+        <h2 id="journey-title">Your customer journey, architected.</h2>
+        <p class="section-lede">Every subscriber enters once, is routed by what they do, and ends up in the same campaign rhythm.</p>
+      </div>
+      <div class="journey" data-journey>
+        <svg class="journey-lines" aria-hidden="true"></svg>
+        <ol class="journey-grid">
+          <li class="journey-node journey-hub" data-node="entry" data-to="bought notyet subscribed" style="--c: 2; --r: 1"><span class="journey-dot" aria-hidden="true"></span><span><small>Entry</small><b>High-converting pop-ups</b></span></li>
+          <li class="journey-node" data-node="bought" data-to="post" style="--c: 1; --r: 2"><span class="journey-dot" aria-hidden="true"></span><span><small>Branch</small><b>Bought</b></span></li>
+          <li class="journey-node" data-node="notyet" data-to="cart" style="--c: 2; --r: 2"><span class="journey-dot" aria-hidden="true"></span><span><small>Branch</small><b>Not bought yet</b></span></li>
+          <li class="journey-node" data-node="subscribed" data-to="nurture" style="--c: 3; --r: 2"><span class="journey-dot" aria-hidden="true"></span><span><small>Branch</small><b>Subscribed</b></span></li>
+          <li class="journey-node" data-node="post" data-to="cross" style="--c: 1; --r: 3"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Post-purchase</b></span></li>
+          <li class="journey-node" data-node="cart" data-to="site" style="--c: 2; --r: 3"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Abandoned cart</b></span></li>
+          <li class="journey-node" data-node="nurture" data-to="campaign" style="--c: 3; --r: 3"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Welcome nurture</b></span></li>
+          <li class="journey-node" data-node="cross" data-to="campaign" style="--c: 1; --r: 4"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Cross-sell</b></span></li>
+          <li class="journey-node" data-node="site" data-to="browse" style="--c: 2; --r: 4"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Site abandonment</b></span></li>
+          <li class="journey-node" data-node="browse" data-to="campaign" style="--c: 2; --r: 5"><span class="journey-dot" aria-hidden="true"></span><span><small>Flow</small><b>Browse abandonment</b></span></li>
+          <li class="journey-node journey-hub" data-node="campaign" style="--c: 2; --r: 6"><span class="journey-dot" aria-hidden="true"></span><span><small>Destination</small><b>Campaigns</b></span></li>
+        </ol>
+      </div>
+    </section>
+
     <section class="section offer-section" id="method" aria-labelledby="offer-title">
       <div class="content-column">
         <div class="section-heading reveal-group">
@@ -254,6 +286,49 @@
         </div>
         <div class="process-cta reveal">
           <a class="button button-primary js-cta" href="#booking">Book your audit</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section calc-section" id="calculator" aria-labelledby="calc-title">
+      <div class="section-heading content-column reveal-group">
+        <h2 id="calc-title">When does a customer pay you back?</h2>
+        <p class="section-lede">Move the sliders to your numbers. See the order a customer breaks even on, and how many it takes to compound.</p>
+      </div>
+      <div class="calc" data-calc>
+        <form class="calc-card" aria-labelledby="calc-form-title">
+          <h3 id="calc-form-title">Try your numbers</h3>
+          <div class="calc-field">
+            <label for="calc-aov">Average order value <output data-unit="$">$65</output></label>
+            <input id="calc-aov" name="aov" type="range" min="15" max="300" step="1" value="65">
+          </div>
+          <div class="calc-field">
+            <label for="calc-margin">Gross margin <output data-unit="%">55%</output></label>
+            <input id="calc-margin" name="margin" type="range" min="10" max="90" step="1" value="55">
+          </div>
+          <div class="calc-field">
+            <label for="calc-cac">Acquisition cost <output data-unit="$">$85</output></label>
+            <input id="calc-cac" name="cac" type="range" min="5" max="300" step="1" value="85">
+          </div>
+          <div class="calc-field">
+            <label for="calc-freq">Orders per customer / year <output data-unit="×">2.4×</output></label>
+            <input id="calc-freq" name="freq" type="range" min="1" max="12" step="0.1" value="2.4">
+          </div>
+          <div class="calc-field">
+            <label for="calc-life">Customer lifetime <output data-unit=" yr">2.5 yr</output></label>
+            <input id="calc-life" name="life" type="range" min="0.5" max="5" step="0.5" value="2.5">
+          </div>
+        </form>
+        <div class="calc-card" aria-live="polite">
+          <div class="calc-stats">
+          <div class="calc-stat is-key"><small>Breaks even on</small><strong data-out="even">Order 3</strong><span data-out="evenWhen"></span></div>
+          <div class="calc-stat is-key"><small>Compounds from (3:1 LTV:CAC)</small><strong data-out="comp">Order 8</strong><span data-out="compWhen"></span></div>
+          <div class="calc-stat"><small>Lifetime revenue / customer</small><strong data-out="rev">$390</strong><span data-out="orders"></span></div>
+          <div class="calc-stat"><small>Profit after acquisition</small><strong data-out="profit">$130</strong><span data-out="ratio"></span></div>
+          </div>
+          <ol class="calc-pips" data-pips aria-hidden="true"></ol>
+          <p class="calc-legend" aria-hidden="true"><span><i class="is-paid"></i>Paying back CAC</span><span><i class="is-even"></i>Break-even</span><span><i class="is-profit"></i>Profit</span><span><i class="is-lost"></i>Lost to churn</span></p>
+          <p class="calc-note" data-out="note"></p>
         </div>
       </div>
     </section>
