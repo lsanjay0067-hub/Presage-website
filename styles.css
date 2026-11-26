@@ -1,3 +1,31 @@
+/* Self-hosted latin fonts: no third-party connections before first paint. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("Assets/fonts/inter.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Average Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("Assets/fonts/average-sans.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Azeret Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("Assets/fonts/azeret-mono.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   /* Klaviyo partner badge: 0 hides it, 1 shows it again. */
   --klaviyo-badge-opacity: 1;
@@ -156,6 +184,7 @@ p {
 /* Below-the-fold sections skip layout and paint until they approach the viewport. */
 .offer-section,
 .process-section,
+.calc-section,
 .proof-section,
 .faq-section,
 .booking-section,
@@ -1522,7 +1551,7 @@ body.has-modal .strip-track {
   padding: 34px;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55)),
-    url("Assets/hero-bg.jpg") center / cover no-repeat;
+    url("Assets/hero-bg.webp") center / cover no-repeat;
   color: #ffffff;
   text-align: left;
 }
@@ -1545,10 +1574,6 @@ body.has-modal .strip-track {
   object-fit: cover;
 }
 
-.booking-modal-avatar img.is-mark {
-  width: 24px;
-  height: auto;
-}
 
 .booking-modal-copy h2 {
   margin-bottom: 8px;
