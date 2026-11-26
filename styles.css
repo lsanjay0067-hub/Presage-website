@@ -1167,9 +1167,21 @@ p {
 
 .quotes {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   align-items: start;
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.quote-col {
+  display: grid;
+  gap: 20px;
+}
+
+/* The right column sits lower so the cards read as scattered, not a table. */
+.quote-col + .quote-col {
+  padding-top: 56px;
 }
 
 /* Cards drift on their own rhythm; `translate` stays clear of the reveal transform. */
@@ -1187,15 +1199,18 @@ p {
 }
 
 .quote-card:nth-child(2) {
-  margin-top: 48px;
   animation-delay: -2.4s;
   animation-duration: 8s;
 }
 
-.quote-card:nth-child(3) {
-  margin-top: 16px;
+.quote-col + .quote-col .quote-card {
   animation-delay: -4.6s;
   animation-duration: 7.5s;
+}
+
+.quote-col + .quote-col .quote-card:nth-child(2) {
+  animation-delay: -1.2s;
+  animation-duration: 8.5s;
 }
 
 .proof-section:not(.is-near) .quote-card {
@@ -1867,8 +1882,8 @@ body.has-modal {
     margin-inline: auto;
   }
 
-  .quote-card:nth-child(n) {
-    margin-top: 0;
+  .quote-col + .quote-col {
+    padding-top: 0;
   }
 
   .booking-split {
