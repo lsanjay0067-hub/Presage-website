@@ -1159,6 +1159,140 @@ p {
   border-radius: 8px;
 }
 
+/* ---------- testimonials ---------- */
+
+.proof-grid[hidden] {
+  display: none;
+}
+
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+/* Cards drift on their own rhythm; `translate` stays clear of the reveal transform. */
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  background: var(--surface-1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: quote-float 7s ease-in-out infinite;
+}
+
+.quote-card:nth-child(2) {
+  margin-top: 48px;
+  animation-delay: -2.4s;
+  animation-duration: 8s;
+}
+
+.quote-card:nth-child(3) {
+  margin-top: 16px;
+  animation-delay: -4.6s;
+  animation-duration: 7.5s;
+}
+
+.proof-section:not(.is-near) .quote-card {
+  animation-play-state: paused;
+}
+
+@keyframes quote-float {
+  50% { translate: 0 -10px; }
+}
+
+.quote-stars {
+  display: flex;
+  gap: 3px;
+  color: var(--green);
+}
+
+.quote-stars svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.quote-card blockquote {
+  margin: 0;
+}
+
+.quote-card blockquote p {
+  margin: 0;
+  color: #b3b3b3;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.quote-card .quote-highlight {
+  margin-bottom: 12px;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.quote-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quote-stats li {
+  padding: 6px 12px;
+  border: 1px solid rgba(189, 247, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(189, 247, 184, 0.06);
+  color: var(--grey-3);
+  font-size: 12px;
+}
+
+.quote-stats strong {
+  color: var(--green);
+  font-weight: 500;
+}
+
+.quote-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--grey-3);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.quote-card figcaption b {
+  display: block;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.quote-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 /* ---------- faq ---------- */
 
 .faq-more {
@@ -1727,6 +1861,16 @@ body.has-modal {
     margin-inline: auto;
   }
 
+  .quotes {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  .quote-card:nth-child(n) {
+    margin-top: 0;
+  }
+
   .booking-split {
     grid-template-columns: 1fr;
   }
@@ -2112,6 +2256,7 @@ body.has-modal {
 
   .strip-track,
   .hero-logos-track,
+  .quote-card,
   .hero-badge strong::after {
     animation: none;
   }

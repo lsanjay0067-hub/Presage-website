@@ -652,3 +652,20 @@ if (calc) {
   calc.addEventListener("input", update);
   update();
 }
+
+// ---------- testimonials: a soft gradient per person, picked from each card's unique id ----------
+// The same id always gives the same colours; the initials sit on top.
+document.querySelectorAll("[data-avatar]").forEach((el) => {
+  let h = 2166136261;
+  for (const ch of el.dataset.avatar) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  const hue = 110 + (h % 120); // greens through teals to blues, in the site palette
+  el.style.background = `linear-gradient(135deg, hsl(${hue} 45% 52%), hsl(${hue + 40} 40% 26%))`;
+});
+
+// Floating cards only animate while the section is near the screen.
+const proof = document.querySelector(".proof-section");
+if (proof && "IntersectionObserver" in window) {
+  new IntersectionObserver(([entry]) => proof.classList.toggle("is-near", entry.isIntersecting), { rootMargin: "20% 0px" }).observe(proof);
+} else if (proof) {
+  proof.classList.add("is-near");
+}
