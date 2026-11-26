@@ -653,31 +653,14 @@ if (calc) {
   update();
 }
 
-// ---------- testimonials: illustrated avatars drawn from each card's unique id ----------
-// The same id always draws the same face, so a person keeps their portrait.
-const avatar = (id) => {
+// ---------- testimonials: a soft gradient per person, picked from each card's unique id ----------
+// The same id always gives the same colours; the initials sit on top.
+document.querySelectorAll("[data-avatar]").forEach((el) => {
   let h = 2166136261;
-  for (const ch of id) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
-  const pick = (list) => { const v = list[h % list.length]; h = Math.imul(h ^ (h >>> 13), 2654435761) >>> 0; return v; };
-  const bg = pick(["#1f3a2c", "#24324a", "#3a2f24", "#2d2440", "#1d3b3f"]);
-  const skin = pick(["#f1c9a5", "#e0ac83", "#c68c5f", "#a86f45", "#7c4a2d"]);
-  const hairTone = pick(["#1c1410", "#4a2f1c", "#8a5a2b", "#c9a46a", "#5b5b5b"]);
-  const shirt = pick(["#bdf7b8", "#e8e8e8", "#7fb8a8", "#d9b38c", "#9ab0d6"]);
-  const hair = [
-    `<path d="M19 29c0-9 6-15 13-15s13 6 13 15c-3-5-7-7-13-7s-10 2-13 7z" fill="${hairTone}"/>`,
-    `<path d="M19 30c-1-10 6-16 14-16 7 0 12 5 12 12l-1 3c-2-4-8-7-16-6-4 1-7 3-9 7z" fill="${hairTone}"/>`,
-    `<path d="M20.5 26a11.5 11.5 0 0 1 23 0c-4-3-19-3-23 0z" fill="${hairTone}"/>`,
-    `<g fill="${hairTone}"><circle cx="22" cy="22" r="5"/><circle cx="29" cy="17" r="5.5"/><circle cx="36" cy="17" r="5.5"/><circle cx="42" cy="22" r="5"/></g>`,
-  ][h % 4];
-  const beard = h & 16 ? `<path d="M22 31c1 7 5 10 10 10s9-3 10-10c-2 3-6 4-10 4s-8-1-10-4z" fill="${hairTone}"/>` : "";
-  const glasses = h & 32 ? `<g fill="none" stroke="#111" stroke-width="1.3"><circle cx="27.5" cy="29" r="3.2"/><circle cx="36.5" cy="29" r="3.2"/><path d="M30.7 29h2.6"/></g>` : "";
-  return `<svg viewBox="8 10 48 48"><rect width="64" height="64" fill="${bg}"/>`
-    + `<path d="M10 64c2-12 11-18 22-18s20 6 22 18z" fill="${shirt}"/><rect x="28" y="38" width="8" height="10" rx="3" fill="${skin}"/>`
-    + `<circle cx="32" cy="29" r="12" fill="${skin}"/>${hair}${beard}`
-    + `<g fill="#111"><circle cx="27.5" cy="29.5" r="1.2"/><circle cx="36.5" cy="29.5" r="1.2"/></g>`
-    + `<path d="M28.5 35c2 1.6 5 1.6 7 0" fill="none" stroke="#5a3424" stroke-width="1.2" stroke-linecap="round"/>${glasses}</svg>`;
-};
-document.querySelectorAll("[data-avatar]").forEach((el) => { el.innerHTML = avatar(el.dataset.avatar); });
+  for (const ch of el.dataset.avatar) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  const hue = 110 + (h % 120); // greens through teals to blues, in the site palette
+  el.style.background = `linear-gradient(135deg, hsl(${hue} 45% 52%), hsl(${hue + 40} 40% 26%))`;
+});
 
 // Floating cards only animate while the section is near the screen.
 const proof = document.querySelector(".proof-section");
