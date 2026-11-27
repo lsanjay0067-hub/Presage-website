@@ -383,7 +383,7 @@ p {
   gap: 12px;
   margin: 0 0 30px;
   color: #e6e6e6;
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 14px;
   letter-spacing: -0.02em;
 }
