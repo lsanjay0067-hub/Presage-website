@@ -10,7 +10,7 @@ Agent guide: https://presageretention.com/llms.txt
 
 We build your customer journey that feels like a brand experience and grow lifetime value and repeat purchases with on-brand emails.
 
-You leave with a teardown either way.
+You leave with a teardown.
 
 Klaviyo partner and Shopify partner.
 
