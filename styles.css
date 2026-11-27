@@ -391,19 +391,32 @@ p {
 
 .hero-badge strong {
   position: relative;
-  padding: 7px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 11px;
   border-radius: 999px;
-  background: var(--pill);
-  color: #16301c;
+  background: #e4e6e3;
+  color: #1c1f1c;
   font-weight: 400;
   line-height: 1;
+}
+
+.hero-badge strong::before {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: #3ddc6a;
+  box-shadow: 0 0 6px rgba(61, 220, 106, 0.9);
+  content: "";
 }
 
 .hero-badge strong::after {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 1px rgba(189, 247, 184, 0.5), 0 0 26px rgba(189, 247, 184, 0.55);
+  box-shadow: 0 0 0 1px rgba(228, 230, 227, 0.5), 0 0 26px rgba(228, 230, 227, 0.45);
   content: "";
   opacity: 0.45;
   animation: soft-pulse 3s ease-in-out infinite;
