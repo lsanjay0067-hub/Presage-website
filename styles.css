@@ -1733,8 +1733,10 @@ body.has-modal .strip-track {
 
 .booking-modal-timer {
   margin-bottom: 40px;
-  color: #e4e4e4;
+  color: var(--green);
   font-size: 16px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(189, 247, 184, 0.6), 0 0 22px rgba(189, 247, 184, 0.3);
   font-variant-numeric: tabular-nums;
 }
 
