@@ -347,6 +347,28 @@ if (inlineCalendly) {
 
 let bookingClosing = false;
 
+// ---------- booking modal: 60-second countdown, restarts on each open ----------
+const bookingTimerEl = bookingModal?.querySelector("[data-booking-timer]");
+let bookingTimerId = null;
+function renderBookingTimer(seconds) {
+  if (bookingTimerEl) bookingTimerEl.textContent = `0:${String(seconds).padStart(2, "0")}`;
+}
+function stopBookingTimer() {
+  clearInterval(bookingTimerId);
+  bookingTimerId = null;
+}
+function startBookingTimer() {
+  if (!bookingTimerEl) return;
+  stopBookingTimer();
+  const endsAt = Date.now() + 60000;
+  renderBookingTimer(60);
+  bookingTimerId = setInterval(() => {
+    const left = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+    renderBookingTimer(left);
+    if (left === 0) stopBookingTimer();
+  }, 250);
+}
+
 function openBooking() {
   if (!bookingModal || !calendlyParent) return false;
   if (!calendlyMounted) {
@@ -358,6 +380,7 @@ function openBooking() {
   bookingModal.classList.remove("is-closing");
   bookingModal.hidden = false;
   document.body.classList.add("has-modal");
+  startBookingTimer();
   bookingModal.querySelector(".booking-modal-close")?.focus();
   return true;
 }
@@ -365,6 +388,7 @@ function openBooking() {
 function closeBooking() {
   if (!bookingModal || bookingModal.hidden || bookingClosing) return;
   bookingClosing = true;
+  stopBookingTimer();
   bookingModal.classList.add("is-closing");
   const dialog = bookingModal.querySelector(".booking-modal-dialog");
   let settled = false;

@@ -1731,10 +1731,11 @@ body.has-modal .strip-track {
   letter-spacing: -0.05em;
 }
 
-.booking-modal-with {
+.booking-modal-timer {
   margin-bottom: 40px;
   color: #e4e4e4;
   font-size: 16px;
+  font-variant-numeric: tabular-nums;
 }
 
 .booking-modal-meta {
@@ -1862,7 +1863,7 @@ body.has-modal {
     padding: 26px;
   }
 
-  .booking-modal-with {
+  .booking-modal-timer {
     margin-bottom: 22px;
   }
 
