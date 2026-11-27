@@ -349,7 +349,7 @@ let bookingClosing = false;
 
 // ---------- booking modal: 60-second countdown, restarts on each open ----------
 const bookingTimerEl = bookingModal?.querySelector("[data-booking-timer]");
-const bookingOnlineEl = bookingModal?.querySelector("[data-booking-online]");
+const bookingAvatarEl = bookingModal?.querySelector(".booking-modal-avatar");
 let bookingTimerId = null;
 function renderBookingTimer(seconds) {
   if (bookingTimerEl) bookingTimerEl.textContent = `0:${String(seconds).padStart(2, "0")}`;
@@ -363,13 +363,13 @@ function startBookingTimer() {
   stopBookingTimer();
   const endsAt = Date.now() + 60000;
   renderBookingTimer(60);
-  bookingOnlineEl?.classList.remove("is-off");
+  bookingAvatarEl?.classList.remove("is-off");
   bookingTimerId = setInterval(() => {
     const left = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
     renderBookingTimer(left);
     if (left === 0) {
       stopBookingTimer();
-      bookingOnlineEl?.classList.add("is-off");
+      bookingAvatarEl?.classList.add("is-off");
     }
   }, 250);
 }
